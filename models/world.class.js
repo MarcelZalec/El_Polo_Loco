@@ -14,6 +14,7 @@ class World {
         new Statusbar(2),
     ];
     throwableObjects = [];
+    useableObject = 0;
     coins = [];
 
     constructor(canvas, keyboard) {
@@ -37,10 +38,16 @@ class World {
     }
 
     checkThowObject() {
-        if (this.keyboard.D && this.throwableObjects.length > 0) {
+        if (this.keyboard.D && this.useableObject > 0) {
             let bottle = new throwableObject(this.character.x, this.character.y);
             this.throwableObjects.push(bottle);
-            console.log(this.throwableObjects);
+            // console.log(this.throwableObjects);
+            this.useableObject-- ;
+            console.log(this.useableObject);
+            this.keyboard.D = false;    
+        }
+        if (this.useableObject == 0) {
+            this.throwableObjects = [];
         }
     }
 
@@ -51,12 +58,18 @@ class World {
                 // console.log("crash", this.character.liveEnergy);
             }
         })
-        this.level.collectables.forEach((collectable) => {            
-            if (this.character.isColliding(collectable)) {
-                if (collectable.img.curretnSrc.contains("salsa")) {                    
-                    this.throwableObjects.push(collectable)
-                } else if(collectable.img.curretnSrc.contains("coin")) {
-                    this.coins.push(collectable)
+        this.level.collectables.forEach((collectable) => {                       
+            if (this.character.isColliding(collectable)) {                
+                if (collectable.img.src.includes("salsa")) {              
+                    this.useableObject++;
+                    this.level.collectables.splice(collectable, 1);
+                    console.log("bottle" ,collectable);
+                    console.log("useableObject",this.useableObject);
+                    
+                } else if(collectable.img.src.includes("coin")) {
+                    this.coins.push(collectable)                    
+                    this.level.collectables.splice(collectable, 1);
+                    // console.log("coin" ,collectable);
                 } else {
                     null;
                 }                
