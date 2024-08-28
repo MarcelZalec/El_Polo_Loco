@@ -25,6 +25,7 @@ class Collectable extends drawableObject {
     }
 
     collect() {
+        this.checkCollisionsWithColectable();
         if(bottle) {
             bottles++;
         } else if (coins) {
@@ -34,7 +35,7 @@ class Collectable extends drawableObject {
         }
     }
 
-    checkCollisionsWithColectable(mo) {
+    checkCollisionsWithColectable() {
         if (this instanceof Collectable) {
             return mo;
         }

@@ -10,6 +10,7 @@ class Character extends MoveableObject {
         left: 20,
         right: 50,
     }
+    liveEnergy = 1000;
     IMAGES_walk = [
         'img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
@@ -105,5 +106,15 @@ class Character extends MoveableObject {
                 this.speedY = 15;
             }
         }, 1000 / 60)
+    }
+
+    jumpOnEnemy(enemy) {
+        if (this.isColidingFromTop(enemy)) {
+            enemy.hit()
+        }
+    }
+
+    isColidingFromTop() {
+        
     }
 }

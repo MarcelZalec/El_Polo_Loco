@@ -2,7 +2,7 @@ class Endboss extends MoveableObject {
     height = 400;
     width = 200;
     y = 50;
-    liveEnergy = 1000;
+    liveEnergy = 100;
 
     walk = [
         "img/4_enemie_boss_chicken/1_walk/G1.png",
@@ -20,6 +20,12 @@ class Endboss extends MoveableObject {
         "img/4_enemie_boss_chicken/2_alert/G10.png",
         "img/4_enemie_boss_chicken/2_alert/G11.png",
         "img/4_enemie_boss_chicken/2_alert/G12.png",
+    ]
+
+    dead = [
+        'img/4_enemie_boss_chicken/5_dead/G24.png',
+        'img/4_enemie_boss_chicken/5_dead/G25.png',
+        'img/4_enemie_boss_chicken/5_dead/G26.png',
     ]
 
     hadFirstContact = false;
@@ -47,5 +53,10 @@ class Endboss extends MoveableObject {
             }
             
         }, 110) 
+        setInterval(() => {
+            if (this.isDead) {
+                super.loadImages(this.dead)
+            }
+        })
     }
 }

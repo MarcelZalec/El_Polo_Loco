@@ -31,13 +31,24 @@ button {
     background-color: black;
     background-image: url("img/9_intro_outro_screens/start/startscreen_1.png");
     background-position: center;
-    background-size: 720px 460px;
+    background-size: 100% 100%;
     display: block;
 }
 
 #canvas {
     background-color: black;
     display: block;
+}
+
+.overlay{
+    position: absolute;
+    display: none;
+    max-width: 720px;
+    max-height: 460px;
+    button {
+        width: 40px;
+        height: 30px;
+    }
 }
 
 footer {
@@ -51,6 +62,9 @@ footer {
 @media only screen and (max-width: 760px){
     canvas {
         width: 100%;
+    }
+    .overlay {
+        display: block;
     }
 }
 

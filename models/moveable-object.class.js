@@ -6,6 +6,7 @@ class MoveableObject extends drawableObject {
     accleration = 1;
     liveEnergy = 100;
     lasHit = 0;
+    damamge = 0;
 
 
     moveRight(pixel) {
@@ -20,9 +21,9 @@ class MoveableObject extends drawableObject {
         }, 1000 / 50)
     }
 
-    animate(arr) {
-        let i = this.currentImage % arr.length;
-        let path = arr[i];
+    animate(array) {
+        let i = this.currentImage % array.length;
+        let path = array[i];
         this.img = this.imageCache[path];
         this.currentImage++;
     }
@@ -43,10 +44,18 @@ class MoveableObject extends drawableObject {
         return this.y < 140;
     }
 
+    // isColliding(mo) {
+    //     return  this.x + this.width > mo.x && 
+    //             this.y + this.height > mo.y &&
+    //             this.x < mo.x &&
+    //             this.y < mo.y + mo.height;
+    // }
+
     isColliding(mo) {
-        return this.x + this.width > mo.x && 
-        this.y + this.height > mo.y &&
-        this.x < mo.x && this.y < mo.y + mo.height;
+        return  this.x + this.width - this.offset.right > mo.x && 
+                this.y + this.height - this.offset.bottom > mo.y &&
+                this.x + this.offset.left < mo.x + mo.width &&
+                this.y + this.offset.top < mo.y + mo.height;
     }
 
     // isColliding (obj) {
@@ -55,6 +64,13 @@ class MoveableObject extends drawableObject {
     //             (this.Y + this.offsetY) <= (obj.Y + obj.height) && 
     //             obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
     // }
+
+    isCollidingSure(mo) {
+        return (this.x + this.width) -this.offset.right > mo.x - mo.offset.left && 
+        (this.y + this.height) -this.offset.bottom > mo.y + mo.offset.top &&
+        this.x  + this.offset.left < mo.x + mo.offset.right  &&
+        this.y + this.offset.top < (mo.y + mo.height) - mo.offset.bottom;
+    }
     
 
     hit(damamge) {
@@ -69,8 +85,8 @@ class MoveableObject extends drawableObject {
 
     isDead() {
         if (this.liveEnergy == 0) {
-            console.log("GAME OVER");
-            stopGame();
+            // console.log("GAME OVER");
+            // stopGame()
         }
     }
 
@@ -78,14 +94,6 @@ class MoveableObject extends drawableObject {
         let timepassed = new Date().getTime() - this.lasHit;
         timepassed = timepassed / 1000;
         return timepassed < 0.5;
-    }
-
-
-    isCollidingSure(mo) {
-        return this.x + this.width -this.offset.right > mo.x - mo.offset.left && 
-        this.y + this.height -this.offset.bottom > mo.y + mo.offset.top &&
-        this.x  + this.offset.left < mo.x + mo.offset.right  &&
-        this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
 
 

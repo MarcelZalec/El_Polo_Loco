@@ -3,6 +3,7 @@ class throwableObject extends MoveableObject {
     speedX = 10;
     height = 50;
     width = 50;
+    damage = 50;
 
     IMAGES_throw = [
         "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
@@ -35,7 +36,7 @@ class throwableObject extends MoveableObject {
         this.applyGravity();
         setInterval(()=>{
             this.x += 5;
-            // this.throwAnimation()
+            this.animate(this.IMAGES_splash)
         }, 25)
     }
 

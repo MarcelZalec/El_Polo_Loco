@@ -1,26 +1,24 @@
 class World {
     character = new Character(this.setWorld);
     level = level1;
-    // enemies = this.level.enemies;
-    // clouds = this.level.clouds;
-    // backgroundObjects = this.level.finalBackground;
     canvas;
     ctx;
     keyboard;
     camara_x = 0;
-    statusbar = [
-        new Statusbar(0),
-        new Statusbar(1),
-        new Statusbar(2),
-    ];
+    statusbar = [];
     throwableObjects = [];
-    useableObject = 0;
-    coins = [];
+    useableObject = 50;
+    coins = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.statusbar = [
+            new Statusbar(0, this.ctx, this.character.liveEnergy),
+            new Statusbar(1, this.ctx, this.coins),
+            new Statusbar(2, this.ctx, this.useableObject),
+        ]
         this.draw();
         this.setWorld();
         this.checkCollisionsObjects();
@@ -34,6 +32,7 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThowObject();
+            // this.checkCollectCollisoion();
         }, 1000/60);
     }
 
@@ -42,37 +41,72 @@ class World {
             let bottle = new throwableObject(this.character.x, this.character.y);
             this.throwableObjects.push(bottle);
             // console.log(this.throwableObjects);
-            this.useableObject-- ;
+            this.useableObject -= 1;
             console.log(this.useableObject);
-            this.keyboard.D = false;    
+            this.keyboard.D = false;
         }
         if (this.useableObject == 0) {
             this.throwableObjects = [];
         }
+        // this.checkSalsaCollisoion();
     }
 
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isCollidingSure(enemy)) {
+            if (this.character.isColliding(enemy)) {
                 this.character.hit(0.5)
                 // console.log("crash", this.character.liveEnergy);
             }
         })
-        this.level.collectables.forEach((collectable) => {                       
-            if (this.character.isColliding(collectable)) {                
-                if (collectable.img.src.includes("salsa")) {              
-                    this.useableObject++;
-                    this.level.collectables.splice(collectable, 1);
+    }
+
+    checkSalsaCollisoion() {
+        if (this.throwableObjects > 0) {
+            this.throwableObjects.forEach((bottle) => {
+                this.level.enemies.forEach((enemy) => {
+                    if(bottle.isColliding(enemy)) {
+                        if(this instanceof Endboss) {
+                            enemy.hit(25);
+                        }
+                    }
+                })
+                // if (bottle.isColliding(this.level.enemies)) {
+                //     this.level.enemies.hit(25);
+                // }
+            })
+        }
+        // if (this.throwableObjects > 0) {
+        //     this.throwableObjects.forEach((bottle) => {
+        //         this.level.enemies.forEach((enemy) => {
+        //             if(bottle.isColliding(enemy)) {
+        //                 if(this instanceof Endboss) {
+        //                     enemy.hit(25);
+        //                 }
+        //             }
+        //         })
+        //         // if (bottle.isColliding(this.level.enemies)) {
+        //         //     this.level.enemies.hit(25);
+        //         // }
+        //     })
+        // }
+    }
+
+    checkCollectCollisoion() {
+        this.level.collectables.forEach((collectable, index) => {
+            if (this.character.isCollidingSure(collectable)) {    
+                console.log(collectable.img.src);
+                if (collectable.img.src.includes("salsa")) {
+                    this.useableObject += 1;
+                    this.level.collectables.splice(index, 1);
                     console.log("bottle" ,collectable);
-                    console.log("useableObject",this.useableObject);
-                    
+                    // console.log("useableObject",this.useableObject);
                 } else if(collectable.img.src.includes("coin")) {
-                    this.coins.push(collectable)                    
-                    this.level.collectables.splice(collectable, 1);
+                    this.coins += 1;
+                    this.level.collectables.splice(index, 1);
                     // console.log("coin" ,collectable);
                 } else {
                     null;
-                }                
+                }
             }
         })
     }
@@ -116,7 +150,8 @@ class World {
         }
         mo.draw(this.ctx);
         // mo.drawFrame(this.ctx);
-        mo.drawFrame2(this.ctx);
+        // mo.drawFrame2(this.ctx);
+        // mo.drawFrameZone(this.ctx, mo);
         // mo.drawFrameCollision(this.ctx);
         
 

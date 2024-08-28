@@ -12,6 +12,7 @@ function StartGame() {
     document.getElementById("canvas1").classList.add("d-none");
     world = new World(canvas, keyboard);
     // console.log("My Character is" ,world.character);
+    keyboard.bindBtnPressEvents();
 }
 
 window.addEventListener('keydown', (e) => { // keypress reagiert nicht auf die Pfeiltasten darum muss keydown benutzt werden
