@@ -54,8 +54,8 @@ class Endboss extends MoveableObject {
             
         }, 110) 
         setInterval(() => {
-            if (this.isDead) {
-                super.loadImages(this.dead)
+            if (this.liveEnergy == 0) {
+                this.animate(this.dead)
             }
         })
     }

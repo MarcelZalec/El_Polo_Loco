@@ -17,10 +17,10 @@ class smallChicken extends MoveableObject {
 
         this.x = 400 + Math.random() * 3700;
         this.moveLeft(this.speed)
-        this.animate();
+        this.animate1();
     }
 
-    animate() {
+    animate1() {
         setInterval(()=>{
             this.animate(this.walk)
         }, 110)

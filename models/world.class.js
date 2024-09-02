@@ -32,7 +32,7 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThowObject();
-            // this.checkCollectCollisoion();
+            this.checkCollectCollisoion();
         }, 1000/60);
     }
 
@@ -45,9 +45,9 @@ class World {
             console.log(this.useableObject);
             this.keyboard.D = false;
         }
-        if (this.useableObject == 0) {
-            this.throwableObjects = [];
-        }
+       // if (this.useableObject == 0) {
+       //     this.throwableObjects = [];
+       // }
         // this.checkSalsaCollisoion();
     }
 
@@ -65,9 +65,10 @@ class World {
             this.throwableObjects.forEach((bottle) => {
                 this.level.enemies.forEach((enemy) => {
                     if(bottle.isColliding(enemy)) {
-                        if(this instanceof Endboss) {
+                        if(enemy === this instanceof Endboss) {
                             enemy.hit(25);
                         }
+                        throwableObject.splashAnimation()
                     }
                 })
                 // if (bottle.isColliding(this.level.enemies)) {

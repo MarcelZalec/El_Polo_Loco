@@ -23,6 +23,8 @@ class throwableObject extends MoveableObject {
 
     constructor(x, y) {
         super().loadImage("img/6_salsa_bottle/salsa_bottle.png");
+        this.loadImages(this.IMAGES_throw);
+        this.loadImages(this.IMAGES_splash);
         this.x = x + 80;
         this.y = y +150;
         
@@ -34,15 +36,19 @@ class throwableObject extends MoveableObject {
         this.y;
         this.speedY;
         this.applyGravity();
-        setInterval(()=>{
-            this.x += 5;
-            this.animate(this.IMAGES_splash)
-        }, 25)
+        this.throwAnimation();
     }
 
     throwAnimation() {
         setInterval(() => {
             this.animate(this.IMAGES_throw);
-        }, 1000 / 60)
+        }, 60)
+    }
+
+    splashAnimation() {
+        setInterval(() => {
+            // this.x += 5;
+            this.animate(this.IMAGES_splash)
+        }, 25)
     }
 }
