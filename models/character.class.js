@@ -6,7 +6,7 @@ class Character extends MoveableObject {
     y = canvas.height -340;
     offset = {
         top: 120,
-        bottom: 140,
+        bottom: 50,// 100 //140
         left: 20,
         right: 50,
     }
@@ -73,6 +73,7 @@ class Character extends MoveableObject {
     walking_sound = new Audio("audio/walk.mp3");
     idleTimeout = 10000;
     lastActionTime = 0;
+    isStanding = false;
 
     constructor() {
         super().loadImage("img/2_character_pepe/2_walk/W-21.png");
@@ -84,8 +85,6 @@ class Character extends MoveableObject {
         this.loadImages(this.IMAGES_longIdle);
         this.applyGravity();
         this.walkAnimation();
-        // this.jump();
-        // this.updateLastActionTime();
     }
 
     walkAnimation() {
@@ -94,6 +93,9 @@ class Character extends MoveableObject {
         let isMoving = false;
 
         setInterval(() => {
+            isMoving = false;
+            this.isStanding = false;
+
             this.walking_sound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.otherDirection = false;
@@ -108,10 +110,10 @@ class Character extends MoveableObject {
             } if (this.world.keyboard.SPACE && !this.isAboveGround()) {
                 this.speedY = 15;
                 isMoving = true;
-            } if (!isMoving) {
+            } if (isMoving) {
                 this.updateLastActionTime();
-            } if (timeSinceLastAction > this.idleTimeout && !isMoving && !this.isDead()){
-                this.animate(this.IMAGES_idle);
+            } if (timeSinceLastAction > this.idleTimeout && !isMoving && !this.isDead() && !this.isStanding){
+                this.isStanding = true;
             }
             this.world.camara_x = -this.x + 100;
         }, 1000 / 60)
@@ -123,36 +125,21 @@ class Character extends MoveableObject {
                 this.animate(this.IMAGES_hurt)
             } else if (this.isAboveGround()) {
                this.animate(this.IMAGES_jump)
-            } 
-            // else if (timeSinceLastAction > this.idleTimeout && !isMoving && !this.isDead()) {
-            //     console.log(timeSinceLastAction);
-            //     
-            //     this.animate(this.IMAGES_idle)
-            // }
+            } else if (this.isStanding) {
+                this.animate(this.IMAGES_idle);
+            }
                else {
                 if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                     this.animate(this.IMAGES_walk);
                 }
             }
-        }, 50)
+        }, 100)
     }
-
-    // jump() {
-    //     setInterval(() => {
-    //         if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-    //             this.speedY = 15;
-    //         }
-    //     }, 1000 / 60)
-    // }
 
     jumpOnEnemy(enemy) {
         if (this.isColidingFromTop(enemy)) {
             enemy.hit()
         }
-    }
-
-    isColidingFromTop() {
-        return null
     }
 
     updateLastActionTime() {

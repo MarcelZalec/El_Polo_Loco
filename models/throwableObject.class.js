@@ -1,8 +1,8 @@
 class throwableObject extends MoveableObject {
     speedY = 15;
     speedX = 10;
-    height = 50;
-    width = 50;
+    height = 60;
+    width = 60;
     damage = 50;
 
     IMAGES_throw = [
@@ -27,8 +27,7 @@ class throwableObject extends MoveableObject {
         this.loadImages(this.IMAGES_splash);
         this.x = x + 80;
         this.y = y +150;
-        
-        this.throw()
+        this.throw();
     }
 
     throw() {
@@ -41,13 +40,13 @@ class throwableObject extends MoveableObject {
 
     throwAnimation() {
         setInterval(() => {
+            this.x += 8;
             this.animate(this.IMAGES_throw);
         }, 60)
     }
 
     splashAnimation() {
         setInterval(() => {
-            // this.x += 5;
             this.animate(this.IMAGES_splash)
         }, 25)
     }

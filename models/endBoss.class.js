@@ -3,6 +3,12 @@ class Endboss extends MoveableObject {
     width = 200;
     y = 50;
     liveEnergy = 100;
+    offset = {
+        top: 0,
+        bottom: 50,
+        left: 20,
+        right: 50,
+    }
 
     walk = [
         "img/4_enemie_boss_chicken/1_walk/G1.png",
@@ -34,6 +40,7 @@ class Endboss extends MoveableObject {
     constructor() {
         super().loadImage(this.walk1[0]);
         this.loadImages(this.walk1);
+        this.loadImages(this.dead);
         this.x = 3400;
         this.animate1();
     }
@@ -54,9 +61,10 @@ class Endboss extends MoveableObject {
             
         }, 110) 
         setInterval(() => {
-            if (this.liveEnergy == 0) {
+            if (this.liveEnergy <= 0) {
                 this.animate(this.dead)
+                this.isDead();
             }
-        })
+        }, 110)
     }
 }

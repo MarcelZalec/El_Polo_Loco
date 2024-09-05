@@ -10,7 +10,7 @@ class drawableObject {
         top: 0,
         bottom: 0,
         left: 0,
-        right: 0,
+        right: 20,
     }
     
     loadImage(path) {
@@ -48,6 +48,19 @@ class drawableObject {
 
     drawFrame2(ctx) {
         if (this instanceof Character || this instanceof Chicken || this instanceof Collectable ||this instanceof Endboss ||this instanceof throwableObject) {
+            ctx.beginPath();
+            ctx.lineWidth = "5";
+            ctx.strokeStyle = "red";
+            ctx.rect(this.x + this.offset.left, 
+                this.y + this.offset.top,
+                this.width - this.offset.right,
+                this.height - this.offset.bottom);
+            ctx.stroke();
+        }
+    }
+
+    drawFrame3(ctx) {
+        if (this instanceof throwableObject || this instanceof Endboss) {
             ctx.beginPath();
             ctx.lineWidth = "5";
             ctx.strokeStyle = "red";

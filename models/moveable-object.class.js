@@ -44,13 +44,6 @@ class MoveableObject extends drawableObject {
         return this.y < 140;
     }
 
-    // isColliding(mo) {
-    //     return  this.x + this.width > mo.x && 
-    //             this.y + this.height > mo.y &&
-    //             this.x < mo.x &&
-    //             this.y < mo.y + mo.height;
-    // }
-
     isColliding(mo) {
         return  this.x + this.width - this.offset.right > mo.x && 
                 this.y + this.height - this.offset.bottom > mo.y &&
@@ -58,52 +51,40 @@ class MoveableObject extends drawableObject {
                 this.y + this.offset.top < mo.y + mo.height;
     }
 
+    isColidingFromTop(enemy) {
+        return  this.x + this.width - this.offset.right > enemy.x && 
+                this.y + this.height - this.offset.bottom < enemy.y + 20 &&
+                this.x + this.offset.left < enemy.x + enemy.width &&
+                this.y + this.offset.top < enemy.y + enemy.height;
+    }
+
     // isColliding (obj) {
     //     return  (this.X + this.width) >= obj.X && this.X <= (obj.X + obj.width) && 
     //             (this.Y + this.offsetY + this.height) >= obj.Y &&
     //             (this.Y + this.offsetY) <= (obj.Y + obj.height) && 
     //             obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
-    // }
-
-    isCollidingSure(mo) {
-        return (this.x + this.width) -this.offset.right > mo.x - mo.offset.left && 
-        (this.y + this.height) -this.offset.bottom > mo.y + mo.offset.top &&
-        this.x  + this.offset.left < mo.x + mo.offset.right  &&
-        this.y + this.offset.top < (mo.y + mo.height) - mo.offset.bottom;
-    }
-    
+    // }    
 
     hit(damamge) {
-        this.liveEnergy -= damamge;
-        if (this.liveEnergy < 0) {
-            this.liveEnergy = 0;
-        } else {
+        if (!this.isHurt()) {
+            this.liveEnergy -= damamge;
             this.lasHit = new Date().getTime();
+        } else if (this.liveEnergy < 0) {
+            this.liveEnergy = 0;
         }
         // console.log(this.liveEnergy);
     }
 
     isDead() {
         if (this.liveEnergy == 0) {
-            // console.log("GAME OVER");
-            // stopGame()
+            console.log("GAME OVER");
+            stopGame()
         }
     }
 
     isHurt() {
         let timepassed = new Date().getTime() - this.lasHit;
-        timepassed = timepassed / 1000;
-        return timepassed < 0.5;
+        let currenttimepassed = timepassed / 1000;
+        return currenttimepassed < 0.5;
     }
-
-
-    // this.x + this.offset.left, this.y + this.offset.top, this.width -
-    //             this.offset.right, this.height - this.offset.bottom
-
-    // isCollidingSure(mo) {
-    //     return this.x + this.width -this.offset.right > mo.x + mo.offset.left && 
-    //     this.y + this.height -this.offset.bottom > mo.y + mo.offset.top &&
-    //     this.x  + this.offset.left < mo.x + mo.offset.right  &&
-    //     this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
-    // }
 }
