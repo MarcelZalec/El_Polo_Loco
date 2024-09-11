@@ -6,7 +6,7 @@ class Character extends MoveableObject {
     y = canvas.height -340;
     offset = {
         top: 120,
-        bottom: 50,// 100 //140
+        bottom: 140,// 100 //140
         left: 20,
         right: 50,
     }

@@ -22,6 +22,13 @@ class World {
         this.draw();
         this.setWorld();
         this.checkCollisionsObjects();
+        this.Console();
+    }
+
+    Console() {
+        setInterval(() => {
+            console.log(this.character.speedY,  this.character.y);
+        }, 1000) 
     }
 
     setWorld() {
@@ -33,7 +40,8 @@ class World {
             this.checkCollisions();
             this.checkThrowObject();
             this.checkCollectCollisoion();
-        }, 1000/60);
+            this.level.enemies.liveEnergy
+        }, 1000/10);
     }
 
     checkThrowObject() {
@@ -52,7 +60,8 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy, index) => {
             if (this.character.isColliding(enemy)) {
-                if (this.character.isColidingFromTop(enemy)) {
+                console.log(this.character.speedY);
+                if (this.character.isColidingFromTop(enemy) && !(enemy instanceof Endboss) && this.character.speedY < 0) {
                     enemy.hit(1000);
                     this.level.enemies.splice(index, 1);
                 } else if (enemy instanceof Chicken || enemy instanceof smallChicken) {
@@ -158,7 +167,7 @@ class World {
         }
         mo.draw(this.ctx);
         // mo.drawFrame(this.ctx);
-        // mo.drawFrame2(this.ctx);
+        mo.drawFrame2(this.ctx);
         mo.drawFrame3(this.ctx);
         // mo.drawFrameZone(this.ctx, mo);
         // mo.drawFrameCollision(this.ctx);

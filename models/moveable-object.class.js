@@ -33,6 +33,8 @@ class MoveableObject extends drawableObject {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.accleration;
+            } else {
+                this.speedY = 0;
             }
         }, 1000 / 25)
     }
@@ -46,16 +48,23 @@ class MoveableObject extends drawableObject {
 
     isColliding(mo) {
         return  this.x + this.width - this.offset.right > mo.x && 
-                this.y + this.height - this.offset.bottom > mo.y &&
+                this.y + this.height - this.offset.bottom/3 > mo.y &&
                 this.x + this.offset.left < mo.x + mo.width &&
                 this.y + this.offset.top < mo.y + mo.height;
     }
 
     isColidingFromTop(enemy) {
-        return  this.x + this.width - this.offset.right > enemy.x && 
-                this.y + this.height - this.offset.bottom < enemy.y + 20 &&
-                this.x + this.offset.left < enemy.x + enemy.width &&
-                this.y + this.offset.top < enemy.y + enemy.height;
+        if (enemy instanceof smallChicken) {
+            return  this.x + this.width - this.offset.right > enemy.x && 
+                    this.y + this.height - enemy.height*1.2 < enemy.y + enemy.offset.bottom &&
+                    this.x + this.offset.left < enemy.x + enemy.width &&
+                    this.y + this.offset.top < enemy.y + enemy.height;
+        } else {
+            return  this.x + this.width - this.offset.right > enemy.x && 
+                    this.y + this.height - enemy.height*1 < enemy.y + enemy.offset.bottom &&
+                    this.x + this.offset.left < enemy.x + enemy.width &&
+                    this.y + this.offset.top < enemy.y + enemy.height; 
+        }        
     }
 
     // isColliding (obj) {

@@ -4,6 +4,12 @@ class smallChicken extends MoveableObject {
     speed = 0.15 + Math.random() * 0.5;
     y = canvas.height - 100;
     isDead = false;
+    offset = {
+        top: 0,
+        bottom: 10,
+        left: 0,
+        right: 0,
+    }
 
     walk = [
         'img/3_enemies_chicken/chicken_small/1_walk/1_w.png',
