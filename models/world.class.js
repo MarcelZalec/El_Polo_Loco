@@ -9,6 +9,8 @@ class World {
     throwableObjects = [];
     useableObject = 50;
     coins = 0;
+    collectSound = new Audio("audio/collect.mp3");
+    splashSound = new Audio("audio/splash.mp3");
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -38,10 +40,11 @@ class World {
     checkCollisionsObjects() {
         setInterval(() => {
             this.checkCollisions();
-            this.checkThrowObject();
-            this.checkCollectCollisoion();
-            this.level.enemies.liveEnergy
         }, 1000/10);
+        setInterval(() => {
+            this.checkCollectCollisoion();
+            this.checkThrowObject();
+        }, 1000/60)
     }
 
     checkThrowObject() {
@@ -60,7 +63,6 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy, index) => {
             if (this.character.isColliding(enemy)) {
-                console.log(this.character.speedY);
                 if (this.character.isColidingFromTop(enemy) && !(enemy instanceof Endboss) && this.character.speedY < 0) {
                     enemy.hit(1000);
                     this.level.enemies.splice(index, 1);
@@ -79,6 +81,7 @@ class World {
     }
 
     checkSalsaCollisoion() {
+        this.splashSound.pause();
         if (this.throwableObjects.length >= 0) {
             this.throwableObjects.forEach((bottle) => {
                 this.level.enemies.forEach((enemy) => {
@@ -86,41 +89,32 @@ class World {
                         if(enemy instanceof Endboss) {
                             enemy.hit(25);
                             bottle.splashAnimation();
+                            this.splashSound.play();
                         }
                         if (!enemy instanceof Endboss) {
                             this.level.enemies.hit(100);
                             bottle.splashAnimation();
+                            this.splashSound.play();
                         }
-                        
+                        this.splashSound.play();
                     }
                 })
             })
         }
-        // if (this.throwableObjects > 0) {
-        //     this.throwableObjects.forEach((bottle) => {
-        //         this.level.enemies.forEach((enemy) => {
-        //             if(bottle.isColliding(enemy)) {
-        //                 if(this instanceof Endboss) {
-        //                     enemy.hit(25);
-        //                 }
-        //             }
-        //         })
-        //         // if (bottle.isColliding(this.level.enemies)) {
-        //         //     this.level.enemies.hit(25);
-        //         // }
-        //     })
-        // }
     }
 
     checkCollectCollisoion() {
         this.level.collectables.forEach((collectable, index) => {
-            if (this.character.isColliding(collectable)) {    
+            this.collectSound.pause();
+            if (this.character.isColliding(collectable)) {  
                 if (collectable.img.src.includes("salsa")) {
                     this.useableObject += 1;
                     this.level.collectables.splice(index, 1);
+                    this.collectSound.play();
                 } else if(collectable.img.src.includes("coin")) {
                     this.coins += 1;
                     this.level.collectables.splice(index, 1);
+                    this.collectSound.play();
                 } else {
                     null;
                 }

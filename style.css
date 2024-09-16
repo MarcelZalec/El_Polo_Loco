@@ -52,11 +52,44 @@ button {
 }
 
 .game-container {
-    position: relative;
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
-    display: none;
+    height: 440px;
+    width: 670px;
+}
+.actionBtns {
+    width: 40px;
+    height: 33px;
+    display: flex;
+}
+.panel1 {
+    position: relative;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    top: -10px;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+}
+.panel2 {
+    position: relative;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    top: 180px;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+#btnRight {
+    left: 45px;
+}
+#btnThrow {
+    right:  45px;
 }
 
 footer {

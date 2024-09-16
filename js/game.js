@@ -9,6 +9,7 @@ function init() {
 
 function StartGame() {
     startLevel();
+    document.getElementById("controles").classList.remove("d-none");
     document.getElementById("canvas1").classList.add("d-none");
     world = new World(canvas, keyboard);
     // console.log("My Character is" ,world.character);

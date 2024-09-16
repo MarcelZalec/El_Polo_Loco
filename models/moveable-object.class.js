@@ -7,6 +7,7 @@ class MoveableObject extends drawableObject {
     liveEnergy = 100;
     lasHit = 0;
     damamge = 0;
+    death_chicken_Sound = new Audio ("audio/chicken.mp3");
 
 
     moveRight(pixel) {

@@ -29,9 +29,10 @@ class smallChicken extends MoveableObject {
 
     animate1() {
         setInterval(()=>{
+            // this.death_chicken_Sound.pause();
             this.animate(this.walk)
             if (this.liveEnergy <= 0 && !this.isDead) {
-                console.log("error");
+                this.death_chicken_Sound.play();
                 this.animate(this.IMAGE_isDead);
                 this.isDead = true;
             }
