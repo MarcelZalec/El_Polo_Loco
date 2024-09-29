@@ -82,7 +82,13 @@ class MoveableObject extends drawableObject {
         } else if (this.liveEnergy < 0) {
             this.liveEnergy = 0;
         }
-        // console.log(this.liveEnergy);
+    }
+
+    hitEnemy(damamge) {
+        this.liveEnergy -= damamge;
+        if (this.liveEnergy < 0) {
+            this.liveEnergy = 0;
+        }
     }
 
     isDead() {

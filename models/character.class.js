@@ -4,13 +4,20 @@ class Character extends MoveableObject {
     width = 150;
     speed = 5;
     y = canvas.height -340;
+    world;
+    walking_sound = new Audio("audio/walk.mp3");
+    idleTimeout = 10000;
+    lastActionTime = 0;
+    isStanding = false;
+    liveEnergy = 100;
+
     offset = {
         top: 120,
         bottom: 140,// 100 //140
         left: 20,
         right: 50,
-    }
-    liveEnergy = 1000;
+    };
+
     IMAGES_walk = [
         'img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
@@ -18,7 +25,8 @@ class Character extends MoveableObject {
         'img/2_character_pepe/2_walk/W-24.png',
         'img/2_character_pepe/2_walk/W-25.png',
         'img/2_character_pepe/2_walk/W-26.png',
-    ]
+    ];
+
     IMAGES_jump = [
         "img/2_character_pepe/3_jump/J-31.png",
         "img/2_character_pepe/3_jump/J-32.png",
@@ -29,7 +37,8 @@ class Character extends MoveableObject {
         "img/2_character_pepe/3_jump/J-37.png",
         "img/2_character_pepe/3_jump/J-38.png",
         "img/2_character_pepe/3_jump/J-39.png",
-    ]
+    ];
+
     IMAGES_dead = [
         "img/2_character_pepe/5_dead/D-51.png",
         "img/2_character_pepe/5_dead/D-52.png",
@@ -45,6 +54,7 @@ class Character extends MoveableObject {
         "img/2_character_pepe/4_hurt/H-42.png",
         "img/2_character_pepe/4_hurt/H-43.png",
     ];
+
     IMAGES_idle = [
         "img/2_character_pepe/1_idle/idle/I-1.png",
         "img/2_character_pepe/1_idle/idle/I-2.png",
@@ -57,6 +67,7 @@ class Character extends MoveableObject {
         "img/2_character_pepe/1_idle/idle/I-9.png",
         "img/2_character_pepe/1_idle/idle/I-10.png",
     ];
+    
     IMAGES_longIdle = [
         "img/2_character_pepe/1_idle/long_idle/I-11.png",
         "img/2_character_pepe/1_idle/long_idle/I-12.png",
@@ -69,11 +80,6 @@ class Character extends MoveableObject {
         "img/2_character_pepe/1_idle/long_idle/I-19.png",
         "img/2_character_pepe/1_idle/long_idle/I-20.png",
     ];
-    world;
-    walking_sound = new Audio("audio/walk.mp3");
-    idleTimeout = 10000;
-    lastActionTime = 0;
-    isStanding = false;
 
     constructor() {
         super().loadImage("img/2_character_pepe/2_walk/W-21.png");

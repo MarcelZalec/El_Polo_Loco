@@ -11,20 +11,22 @@ class World {
     coins = 0;
     collectSound = new Audio("audio/collect.mp3");
     splashSound = new Audio("audio/splash.mp3");
+    statusbarBoss = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.statusbar = [
-            new Statusbar(0, this.ctx, this.character.liveEnergy),
-            new Statusbar(1, this.ctx, this.coins),
-            new Statusbar(2, this.ctx, this.useableObject),
+            new Statusbar(0, this.ctx),
+            new Statusbar(1, this.ctx),
+            new Statusbar(2, this.ctx),
         ]
         this.draw();
         this.setWorld();
         this.checkCollisionsObjects();
-        this.Console();
+        this.checkCaracterPositionToBoss();
+        // this.Console();
     }
 
     Console() {
@@ -35,6 +37,7 @@ class World {
 
     setWorld() {
         this.character.world = this;
+        // this.statusbar.world = this;
     }
 
     checkCollisionsObjects() {
@@ -54,6 +57,7 @@ class World {
             this.useableObject -= 1;
             this.keyboard.D = false;
             this.checkSalsaCollisoion();
+            this.statusbar[2].setPercentage(this.useableObject*20, 2)
         }
         if (this.useableObject == 0) {
            this.throwableObjects = [];
@@ -69,11 +73,14 @@ class World {
                 } else if (enemy instanceof Chicken || enemy instanceof smallChicken) {
                     if (!enemy.isDead) {
                         this.character.hit(0.5);
+                        this.statusbar[0].setPercentage(this.character.liveEnergy, 0)
                     } else {
                         null;
                     }
-                } else {
-                    this.character.hit(0.5);
+                } else if(enemy instanceof Endboss){
+                    enemy.atacking(25);
+                    // this.character.hit(0.5);
+                    this.statusbar[0].setPercentage(this.character.liveEnergy, 0)
                 }
                 // console.log("crash", this.character.liveEnergy);
             }
@@ -87,12 +94,14 @@ class World {
                 this.level.enemies.forEach((enemy) => {
                     if(bottle.isColliding(enemy)) {
                         if(enemy instanceof Endboss) {
-                            enemy.hit(25);
+                            console.log("collinding");
+                            enemy.hitEnemy(25);
                             bottle.splashAnimation();
+                            enemy.isHurt();
                             this.splashSound.play();
-                        }
-                        if (!enemy instanceof Endboss) {
-                            this.level.enemies.hit(100);
+                            this.statusbar[3].setPercentage(enemy.liveEnergy, 3);
+                        }else if (!enemy instanceof Endboss) {
+                            this.level.enemies.hitEnemy(100);
                             bottle.splashAnimation();
                             this.splashSound.play();
                         }
@@ -111,15 +120,28 @@ class World {
                     this.useableObject += 1;
                     this.level.collectables.splice(index, 1);
                     this.collectSound.play();
+                    this.statusbar[2].setPercentage(this.useableObject*20, 2);
                 } else if(collectable.img.src.includes("coin")) {
                     this.coins += 1;
                     this.level.collectables.splice(index, 1);
                     this.collectSound.play();
+                    this.statusbar[1].setPercentage(this.coins*20, 1);
                 } else {
                     null;
                 }
             }
         })
+    }
+
+    checkCaracterPositionToBoss() {
+        setInterval(() => {
+            this.level.enemies.forEach((enemy)=> {
+                if (enemy instanceof Endboss && enemy.hadFirstContact == true && !this.statusbarBoss) {
+                    this.statusbar.push(new Statusbar(3, this.ctx))
+                    this.statusbarBoss = true;
+                }
+            })
+        }, 10)
     }
 
     draw() {
