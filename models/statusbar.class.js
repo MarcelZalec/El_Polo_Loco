@@ -5,11 +5,6 @@ class Statusbar extends drawableObject {
     width = 150;
     ctx;
 
-    // IMAGES = [
-    //     "img/7_statusbars/3_icons/icon_health.png",
-    //     "img/7_statusbars/3_icons/icon_coin.png",
-    //     "img/7_statusbars/3_icons/icon_salsa_bottle.png",
-    // ];
     HEALTH = [
         "img/7_statusbars/1_statusbar/2_statusbar_health/green/0.png",
         "img/7_statusbars/1_statusbar/2_statusbar_health/green/20.png",
@@ -61,22 +56,13 @@ class Statusbar extends drawableObject {
         if (i == 0) {
             this.y = 20;
             this.loadImage(this.HEALTH[this.resolveImageIndex()]);
-            // this.ctx.font = "20px Georgia";
-            // this.ctx.fillText(`${value}`,50,50);
         } else if(i == 1) {
-            // this.setPercentage(this.percentage);
             this.y = 60;
             this.loadImage(this.COINS[this.percentage]);
-            // this.ctx.font = "20px Georgia";
-            // this.ctx.fillText(`${value}`,100,50);
         } else if(i == 2) {
-            // this.setPercentage(0, this.BOTTLES);
             this.y = 110;
             this.loadImage(this.BOTTLES[this.percentage]);
-            // this.ctx.font = "20px Georgia";
-            // this.ctx.fillText(`${value}`,170,50);
         } else {
-            // this.setPercentage(100, this.ENDBOSS);
             this.x = 550;
             this.y = 20;
             this.loadImage(this.ENDBOSS[this.resolveImageIndex()]);

@@ -4,6 +4,14 @@ body {
     align-items: center;
     margin: 0;
     background-image: url("img/desert-1052092_1920.jpg");
+    height: 100vh;
+    a {
+        color: goldenrod;
+        text-decoration: underline;
+    }
+    a:hover {
+        color: rgba(218, 165, 32, 0.6);
+    }
 }
 
 .d-none {
@@ -21,9 +29,28 @@ body {
     justify-content: center;
 }
 
-button {
+.menuButtons {
     position: absolute;
     bottom: 20vh;
+    max-width: 720px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    button {
+        height: 30px;
+        background-color: rgb(230, 230, 73);
+        border-radius: 14px;
+        border: 2px solid blue;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    button:hover {
+        cursor: pointer;
+        background-color: rgba(230, 230, 73, 0.7);
+    }
 }
 
 #canvas1 {
@@ -40,17 +67,6 @@ button {
     display: block;
 }
 
-.overlay{
-    position: absolute;
-    display: none;
-    max-width: 720px;
-    max-height: 460px;
-    button {
-        width: 40px;
-        height: 30px;
-    }
-}
-
 .game-container {
     position: absolute;
     display: flex;
@@ -58,6 +74,12 @@ button {
     align-items: center;
     height: 440px;
     width: 670px;
+    margin-bottom: 40px;
+    button {
+        position: absolute;
+        width: 40px;
+        height: 30px;
+    }
 }
 .actionBtns {
     width: 40px;
@@ -98,6 +120,64 @@ footer {
     display: flex;
     align-items: end;
     padding-bottom: 20px;
+}
+
+#turn-device{
+    position: absolute;
+    z-index: 1;
+    border: 2px solid rgba(128, 32, 0, 0.8);
+    color: rgba(128, 32, 0, 0.8);
+    font-size: 32px;
+    background-color: rgb(248, 227, 190);
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.description-container {
+    position: absolute;
+    height: 460px;
+    width: 720px;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: yellow;
+    h2 {
+        font-size: 30px;
+        position: absolute;
+        top: 0;
+        display: flex;
+        align-items: start !important;
+    }
+    h3 {
+        font-size: 24px;
+        display: flex;
+        align-items: start !important;
+        text-decoration: underline;
+    }
+    p {
+        font-size: 16px;
+        font-weight: 700;
+    }
+}
+
+.collum {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    justify-content: space-around;
+}
+
+.linkSection {
+    width: 50%;
 }
 
 @media only screen and (max-width: 760px){

@@ -12,6 +12,7 @@
     <script src="models/drawableObject.class.js"></script>
     <script src="models/moveable-object.class.js"></script>
     <script src="models/throwableObject.class.js"></script>
+    <script src="models/gameOver.class.js"></script>
     <script src="models/colectables.class.js"></script>
     <script src="models/statusbar.class.js"></script>
     <script src="models/character.class.js"></script>
@@ -30,6 +31,9 @@
 <body onload="init()">
     <h1>El Pollo Loco</h1>
     <div class="canvasCONT">
+        <div id="turn-device" class="d-none">
+            <p>Turn your Device</p>
+        </div>
         <canvas id="canvas1" width="720px" height="480px"></canvas>
         <canvas id="canvas" width="720px" height="480px"></canvas>
         <div id="controles" class="game-container d-none">
@@ -59,8 +63,44 @@
                 </div>
             </div>
         </div>
+        <div id="imprint-container" class="description-container d-none">
+            <h2>Imprint</h2>
+            <div class="collum">
+                <div class="row">
+                    <div>
+                        <h3>Provider:</h3>
+                        <p>Zalec Marcel</p>
+                        <p>Rosen 41</p>
+                        <p>St.Main/Rau</p>
+                    </div>
+                    <div>
+                        <h3>Contact:</h3>
+                        <p>phone: <a href="tel: +43 (0) 6781316032">06881816032</a></p>
+                        <p>E mail: <a href="mailto: mail@polloLoco.com">mail@polloLoco.com</a></p>
+                    </div>
+                </div>
+                <div class="row linkSection">
+                    <p>Pictuers from <a href="https://pixabay.com/de/">Pixabay</a></p>
+                    <p>Music from <a href="https://freesound.org/">Freesound</a></p>
+                </div>
+            </div>
+        </div>
+        <div id="controls" class="description-container d-none">
+            <div>
+                <h2>Controls</h2>
+                <p>Walk Left = Letf Arrow</p>
+                <p>Walk Right = Right Arrow</p>
+                <p>Jump = Space</p>
+                <p>Throw Bottle = D</p>
+            </div>
+        </div>
     </div>
-    <button onclick="StartGame()">start game</button>
+    <div id="bottomButtons" class="menuButtons">
+        <button id="showControls" onclick="sowOrHideControls()">Show Controls</button>
+        <button id="startButton" onclick="StartGame()">Start Game</button>
+        <button id="imprintButton" onclick="showOrHideImprint1()">Imprint</button>
+        <button id="muteButton" onclick="mutegame()" class="d-none">Mute Sounds</button>
+    </div>
 </body>
-<footer>bilder von Pixabay  audio von Freesound</footer>
+<footer id="footer">bilder von Pixabay  audio von Freesound</footer>
 </html>

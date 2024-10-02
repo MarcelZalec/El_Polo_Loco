@@ -3,7 +3,7 @@ class Endboss extends MoveableObject {
     width = 200;
     y = 50;
     liveEnergy = 100;
-    speed = 0.005;
+    speed = 0.05;
     offset = {
         top: 0,
         bottom: 50,
@@ -100,6 +100,7 @@ class Endboss extends MoveableObject {
     }
 
     isHurt() {
+        this.death_chicken_Sound.play();
         this.animate(this.HURT);
     }
 }

@@ -1,5 +1,5 @@
 class Character extends MoveableObject {
-    x = 200;
+    x = 200; //Standart = 200
     height = 300;
     width = 150;
     speed = 5;
@@ -13,7 +13,7 @@ class Character extends MoveableObject {
 
     offset = {
         top: 120,
-        bottom: 140,// 100 //140
+        bottom: 140,
         left: 20,
         right: 50,
     };
