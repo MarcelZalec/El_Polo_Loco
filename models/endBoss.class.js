@@ -1,3 +1,20 @@
+/**
+ * Class representing the end boss enemy.
+ * @extends MoveableObject
+ * 
+ * @property {number} height - The height of the end boss.
+ * @property {number} width - The width of the end boss.
+ * @property {number} y - The y-coordinate of the end boss.
+ * @property {number} liveEnergy - The live energy of the end boss.
+ * @property {number} speed - The speed of the end boss.
+ * @property {Object} offset - The offset values for collision detection.
+ * @property {string[]} walk - Array of image paths for walking animation.
+ * @property {string[]} alert - Array of image paths for alert animation.
+ * @property {string[]} HURT - Array of image paths for hurt animation.
+ * @property {string[]} atack - Array of image paths for attack animation.
+ * @property {string[]} dead - Array of image paths for dead animation.
+ * @property {boolean} hadFirstContact - Indicates if the end boss had first contact with the character.
+ */
 class Endboss extends MoveableObject {
     height = 400;
     width = 200;
@@ -54,7 +71,9 @@ class Endboss extends MoveableObject {
 
     hadFirstContact = false;
 
-
+    /**
+     * Creates an end boss enemy.
+     */
     constructor() {
         super().loadImage(this.alert[0]);
         this.loadImages(this.walk);
@@ -66,6 +85,9 @@ class Endboss extends MoveableObject {
         this.animate1();
     }
 
+    /**
+     * Animates the end boss's actions.
+     */
     animate1() {
         let i = 0;
         setInterval(() => {
@@ -94,11 +116,18 @@ class Endboss extends MoveableObject {
         }, 110)
     }
 
+    /**
+     * Executes the attack animation and inflicts damage on the character.
+     * @param {number} damage - The amount of damage to inflict.
+     */
     atacking(damage) {
         this.animate(this.atack);
         world.character.hit(damage);
     }
 
+    /**
+     * Executes the hurt animation and plays the hurt sound.
+     */
     isHurt() {
         this.death_chicken_Sound.play();
         this.animate(this.HURT);

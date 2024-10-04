@@ -82,8 +82,8 @@ body {
     }
 }
 .actionBtns {
-    width: 40px;
-    height: 33px;
+    width: 50px; /* 40 */
+    height: 43px; /* 33 */
     display: flex;
 }
 .panel1 {
@@ -91,18 +91,18 @@ body {
     bottom: -50px;
     left: 0;
     right: 0;
-    top: -10px;
     height: 100vh;
     width: 100%;
     display: flex;
+    justify-content: end;
 }
 .panel2 {
     position: relative;
-    bottom: -50px;
+    bottom: -25px; /* -50px */
     left: 0;
     right: 0;
-    top: 180px;
-    height: 100vh;
+    /* top: 180px; */
+    /* height: 100vh; */
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -111,15 +111,7 @@ body {
     left: 45px;
 }
 #btnThrow {
-    right:  45px;
-}
-
-footer {
-    position: absolute;
-    bottom: 0;
-    display: flex;
-    align-items: end;
-    padding-bottom: 20px;
+    right:  55px;
 }
 
 #turn-device{
@@ -180,6 +172,19 @@ footer {
     width: 50%;
 }
 
+#startButtonMobile {
+    position: absolute;
+    height: 30px;
+    width: 150px;
+    background-color: rgb(230, 230, 73);
+    border-radius: 14px;
+    border: 2px solid blue;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media only screen and (max-width: 760px){
     canvas {
         width: 100%;
@@ -195,5 +200,16 @@ footer {
     }
     h1 {
         display: none;
+    }
+    .menuButtons {
+        bottom: 10vh;
+    }
+    .game-container {
+        height: 100%;
+        width: 90%;
+        margin-bottom: 70px;
+    }
+    .description-container {
+        height: 100%;
     }
 }

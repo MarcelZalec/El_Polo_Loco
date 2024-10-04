@@ -1,3 +1,16 @@
+/**
+ * Class representing a chicken enemy.
+ * @extends MoveableObject
+ * 
+ * @property {number} height - The height of the chicken.
+ * @property {number} width - The width of the chicken.
+ * @property {number} speed - The speed of the chicken.
+ * @property {number} y - The y-coordinate of the chicken.
+ * @property {boolean} isDead - Indicates if the chicken is dead.
+ * @property {Object} offset - The offset values for collision detection.
+ * @property {string[]} walk - Array of image paths for walking animation.
+ * @property {string[]} IMAGE_isDead - Array of image paths for dead animation.
+ */
 class Chicken extends MoveableObject {
     height = 100;
     width =  90;
@@ -18,6 +31,9 @@ class Chicken extends MoveableObject {
     ];
     IMAGE_isDead = ['img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
 
+    /**
+     * Creates a chicken enemy.
+     */
     constructor() {
         super().loadImage("img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
         this.loadImages(this.walk)
@@ -27,9 +43,11 @@ class Chicken extends MoveableObject {
         this.animate1();
     }
 
+    /**
+     * Animates the chicken's walking and death actions.
+     */
     animate1() {
         setInterval(()=>{
-            // this.death_chicken_Sound.pause();
             this.animate(this.walk)
             if (this.liveEnergy <= 0 && !this.isDead) {
                 this.death_chicken_Sound.play();

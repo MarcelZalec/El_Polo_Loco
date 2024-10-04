@@ -1,3 +1,18 @@
+/**
+ * Class representing a status bar.
+ * @extends drawableObject
+ * 
+ * @property {number} x - The x-coordinate of the status bar.
+ * @property {number} y - The y-coordinate of the status bar.
+ * @property {number} height - The height of the status bar.
+ * @property {number} width - The width of the status bar.
+ * @property {CanvasRenderingContext2D} ctx - The canvas rendering context.
+ * @property {string[]} HEALTH - Array of image paths for health status.
+ * @property {string[]} COINS - Array of image paths for coin status.
+ * @property {string[]} BOTTLES - Array of image paths for bottle status.
+ * @property {string[]} ENDBOSS - Array of image paths for end boss status.
+ * @property {number} percentage - The current percentage of the status bar.
+ */
 class Statusbar extends drawableObject {
     x = 20;
     y;
@@ -40,6 +55,11 @@ class Statusbar extends drawableObject {
 
     percentage = 100;
 
+    /**
+     * Creates a status bar.
+     * @param {number} index - The index of the status bar type.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
     constructor(index, ctx) {
         super();
         this.ctx = ctx;
@@ -50,6 +70,10 @@ class Statusbar extends drawableObject {
         this.generateStatusbar(index);
     }
 
+    /**
+     * Generates the status bar based on the given index.
+     * @param {number} index - The index of the status bar type.
+     */
     generateStatusbar(index) {
         let i = index;
         this.percentage = this.setStandartPercentage(i);
@@ -69,6 +93,11 @@ class Statusbar extends drawableObject {
         }
     }
 
+    /**
+     * Sets the percentage of the status bar and updates the image.
+     * @param {number} percentage - The new percentage.
+     * @param {number} i - The index of the status bar type.
+     */
     setPercentage(percentage, i) {
         let array = this.checkStatusbar(i);
         this.percentage = percentage;
@@ -76,6 +105,11 @@ class Statusbar extends drawableObject {
         this.img = this.imageCache[path];
     }
 
+    /**
+     * Checks the status bar type and returns the corresponding image array.
+     * @param {number} i - The index of the status bar type.
+     * @returns {string[]} The array of image paths for the status bar type.
+     */
     checkStatusbar(i) {
         if (i == 0) {
             return this.HEALTH;
@@ -88,6 +122,10 @@ class Statusbar extends drawableObject {
         }
     }
 
+    /**
+     * Resolves the image index based on the current percentage.
+     * @returns {number} The index of the image in the array.
+     */
     resolveImageIndex() {
         if (this.percentage == 100) {
             return 5;
@@ -104,6 +142,11 @@ class Statusbar extends drawableObject {
         }
     }
 
+    /**
+     * Sets the standard percentage based on the status bar type.
+     * @param {number} i - The index of the status bar type.
+     * @returns {number} The standard percentage.
+     */
     setStandartPercentage(i) {
         if (i == 1 || i == 2) {
             return 0;

@@ -1,3 +1,14 @@
+/**
+ * Class representing a collectable object.
+ * @extends drawableObject
+ * 
+ * @property {number} x - The x-coordinate of the collectable object.
+ * @property {number} height - The height of the collectable object.
+ * @property {number} width - The width of the collectable object.
+ * @property {Object} offset - The offset values for collision detection.
+ * @property {string[]} IMAGES_Ground_Bottle - Array of image paths for ground bottles.
+ * @property {string[]} IMAGES_Coins - Array of image paths for coins.
+ */
 class Collectable extends drawableObject {
     x;
     height;
@@ -17,13 +28,19 @@ class Collectable extends drawableObject {
         "img/8_coin/coin_1.png",
     ];
 
-
+    /**
+     * Creates a collectable object.
+     * @param {string} objImg - The type of collectable object (e.g., "bottle" or "coin").
+     */
     constructor(objImg) {
         super();
         this.x = 400 + Math.random()*2300;
         this.checkImg(objImg);
     }
 
+    /**
+     * Handles the collection of the object.
+     */
     collect() {
         this.checkCollisionsWithColectable();
         if(bottle) {
@@ -35,12 +52,20 @@ class Collectable extends drawableObject {
         }
     }
 
+    /**
+     * Checks for collisions with collectable objects.
+     * @returns {Object} The collided object.
+     */
     checkCollisionsWithColectable() {
         if (this instanceof Collectable) {
             return mo;
         }
     }
 
+    /**
+     * Sets the image and dimensions based on the type of collectable object.
+     * @param {string} obj - The type of collectable object (e.g., "bottle" or "coin").
+     */
     checkImg(obj) {
         let resImg;
         if (obj == "bottle") {

@@ -1,3 +1,16 @@
+/**
+ * Class representing a small chicken enemy.
+ * @extends MoveableObject
+ * 
+ * @property {number} height - The height of the small chicken.
+ * @property {number} width - The width of the small chicken.
+ * @property {number} speed - The speed of the small chicken.
+ * @property {number} y - The y-coordinate of the small chicken.
+ * @property {boolean} isDead - Indicates if the small chicken is dead.
+ * @property {Object} offset - The offset values for collision detection.
+ * @property {string[]} walk - Array of image paths for walking animation.
+ * @property {string[]} IMAGE_isDead - Array of image paths for dead animation.
+ */
 class smallChicken extends MoveableObject {
     height = 50;
     width =  50;
@@ -18,6 +31,9 @@ class smallChicken extends MoveableObject {
     ];
     IMAGE_isDead = ['img/3_enemies_chicken/chicken_small/2_dead/dead.png'];
 
+    /**
+     * Creates a small chicken enemy.
+     */
     constructor() {
         super().loadImage("img/3_enemies_chicken/chicken_small/1_walk/1_w.png");
         this.loadImages(this.walk)
@@ -27,9 +43,11 @@ class smallChicken extends MoveableObject {
         this.animate1();
     }
 
+    /**
+     * Animates the small chicken's walking and death actions.
+     */
     animate1() {
         setInterval(()=>{
-            // this.death_chicken_Sound.pause();
             this.animate(this.walk)
             if (this.liveEnergy <= 0 && !this.isDead) {
                 this.death_chicken_Sound.play();
@@ -37,6 +55,5 @@ class smallChicken extends MoveableObject {
                 this.isDead = true;
             }
         }, 110)
-
     }
 }

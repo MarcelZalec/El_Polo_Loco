@@ -1,3 +1,15 @@
+/**
+ * Class representing a throwable object.
+ * @extends MoveableObject
+ * 
+ * @property {number} speedY - The vertical speed of the object.
+ * @property {number} speedX - The horizontal speed of the object.
+ * @property {number} height - The height of the object.
+ * @property {number} width - The width of the object.
+ * @property {number} damage - The damage caused by the object.
+ * @property {string[]} IMAGES_throw - Array of image paths for the throw animation.
+ * @property {string[]} IMAGES_splash - Array of image paths for the splash animation.
+ */
 class throwableObject extends MoveableObject {
     speedY = 15;
     speedX = 10;
@@ -21,6 +33,11 @@ class throwableObject extends MoveableObject {
         "img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
     ]
 
+    /**
+     * Creates a throwable object.
+     * @param {number} x - The initial x-coordinate of the object.
+     * @param {number} y - The initial y-coordinate of the object.
+     */
     constructor(x, y) {
         super().loadImage("img/6_salsa_bottle/salsa_bottle.png");
         this.loadImages(this.IMAGES_throw);
@@ -30,6 +47,9 @@ class throwableObject extends MoveableObject {
         this.throw();
     }
 
+    /**
+     * Initiates the throw action.
+     */
     throw() {
         this.x;
         this.y;
@@ -38,6 +58,9 @@ class throwableObject extends MoveableObject {
         this.throwAnimation();
     }
 
+    /**
+     * Animates the throw action.
+     */
     throwAnimation() {
         setInterval(() => {
             if (!world.character.otherDirection) {
@@ -49,6 +72,9 @@ class throwableObject extends MoveableObject {
         }, 60)
     }
 
+    /**
+     * Animates the splash action.
+     */
     splashAnimation() {
         setInterval(() => {
             this.animate(this.IMAGES_splash)

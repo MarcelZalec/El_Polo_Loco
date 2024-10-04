@@ -1,3 +1,27 @@
+/**
+ * Class representing the main character.
+ * @extends MoveableObject
+ * 
+ * @property {number} x - The x-coordinate of the character.
+ * @property {number} height - The height of the character.
+ * @property {number} width - The width of the character.
+ * @property {number} speed - The speed of the character.
+ * @property {number} y - The y-coordinate of the character.
+ * @property {Object} world - The game world.
+ * @property {Audio} walking_sound - The sound played when the character walks.
+ * @property {Audio} jump_sound - The sound played when the character jumps.
+ * @property {number} idleTimeout - The timeout for idle state.
+ * @property {number} lastActionTime - The timestamp of the last action.
+ * @property {boolean} isStanding - Indicates if the character is standing.
+ * @property {number} liveEnergy - The live energy of the character.
+ * @property {Object} offset - The offset values for collision detection.
+ * @property {string[]} IMAGES_walk - Array of image paths for walking animation.
+ * @property {string[]} IMAGES_jump - Array of image paths for jumping animation.
+ * @property {string[]} IMAGES_dead - Array of image paths for dead animation.
+ * @property {string[]} IMAGES_hurt - Array of image paths for hurt animation.
+ * @property {string[]} IMAGES_idle - Array of image paths for idle animation.
+ * @property {string[]} IMAGES_longIdle - Array of image paths for long idle animation.
+ */
 class Character extends MoveableObject {
     x = 200; //Standart = 200
     height = 300;
@@ -6,6 +30,7 @@ class Character extends MoveableObject {
     y = canvas.height -340;
     world;
     walking_sound = new Audio("audio/walk.mp3");
+    jump_sound = new Audio("audio/jump.mp3");
     idleTimeout = 10000;
     lastActionTime = 0;
     isStanding = false;
@@ -81,6 +106,9 @@ class Character extends MoveableObject {
         "img/2_character_pepe/1_idle/long_idle/I-20.png",
     ];
 
+    /**
+     * Creates a new character.
+     */
     constructor() {
         super().loadImage("img/2_character_pepe/2_walk/W-21.png");
         this.loadImages(this.IMAGES_walk);
@@ -93,6 +121,9 @@ class Character extends MoveableObject {
         this.walkAnimation();
     }
 
+    /**
+     * Animates the character's walking, jumping, and idle actions.
+     */
     walkAnimation() {
         let currentTime = new Date().getTime();
         let timeSinceLastAction = currentTime - this.lastActionTime;
@@ -114,6 +145,7 @@ class Character extends MoveableObject {
                 this.walking_sound.play();
                 isMoving = true;
             } if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+                this.jump_sound.play();
                 this.speedY = 15;
                 isMoving = true;
             } if (isMoving) {
@@ -142,12 +174,19 @@ class Character extends MoveableObject {
         }, 100)
     }
 
+    /**
+     * Checks if the character is colliding with an enemy from the top and hits the enemy.
+     * @param {Object} enemy - The enemy object.
+     */
     jumpOnEnemy(enemy) {
         if (this.isColidingFromTop(enemy)) {
             enemy.hit()
         }
     }
 
+    /**
+     * Updates the timestamp of the last action performed by the character.
+     */
     updateLastActionTime() {
         this.lastActionTime = new Date().getTime();
     }

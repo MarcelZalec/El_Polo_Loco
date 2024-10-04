@@ -1,3 +1,13 @@
+/**
+ * Class representing keyboard controls.
+ * 
+ * @property {boolean} LEFT - Indicates if the left key is pressed.
+ * @property {boolean} RIGHT - Indicates if the right key is pressed.
+ * @property {boolean} UP - Indicates if the up key is pressed.
+ * @property {boolean} DOWN - Indicates if the down key is pressed.
+ * @property {boolean} SPACE - Indicates if the space key is pressed.
+ * @property {boolean} D - Indicates if the D key is pressed.
+ */
 class Keyboard {
     LEFT = false;
     RIGHT = false;
@@ -6,10 +16,9 @@ class Keyboard {
     SPACE = false;
     D = false;
 
-    constructor() {
-        // this.bindBtnPressEvents();
-    }
-
+    /**
+     * Binds touch events to the control buttons for mobile devices.
+     */
     bindBtnPressEvents() {
         document.getElementById('btnLeft').addEventListener('touchstart', (e) => {
             e.preventDefault();
