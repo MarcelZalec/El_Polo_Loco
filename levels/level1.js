@@ -3,10 +3,12 @@ function startLevel() {
     level1 = new Level(
         [
             new smallChicken(),
-            new Chicken(),
+            new smallChicken(),
+            new smallChicken(),
             new smallChicken(),
             new Chicken(),
-            new smallChicken(),
+            new Chicken(),
+            new Chicken(),
             new Chicken(),
             new Endboss(),
         ],

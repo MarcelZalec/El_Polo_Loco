@@ -82,10 +82,21 @@ class MoveableObject extends drawableObject {
      * @returns {boolean} True if the objects are colliding, otherwise false.
      */
     isColliding(mo) {
-        return  this.x + this.width - this.offset.right > mo.x && 
-                this.y + this.height - this.offset.bottom/3 > mo.y &&
-                this.x + this.offset.left < mo.x + mo.width &&
-                this.y + this.offset.top < mo.y + mo.height;
+        return  this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+                this.y + this.height + this.offset.bottom > mo.y + mo.offset.top && 
+                this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+                this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
+    }
+
+    isColidingFromTop(mo) {
+            return  this.y + this.height > mo.y + mo.offset.top
+            
+            
+            
+            // this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+            //         this.y + this.height - this.offset.bottom > mo.y + mo.offset.top && 
+            //         this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+            //         this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;     
     }
 
     /**
@@ -93,7 +104,7 @@ class MoveableObject extends drawableObject {
      * @param {Object} enemy - The enemy object.
      * @returns {boolean} True if the object is colliding from the top, otherwise false.
      */
-    isColidingFromTop(enemy) {
+    isColidingFromTopOriginal(enemy) {
         if (enemy instanceof smallChicken) {
             return  this.x + this.width - this.offset.right > enemy.x && 
                     this.y + this.height - enemy.height*1.2 < enemy.y + enemy.offset.bottom &&
@@ -113,7 +124,7 @@ class MoveableObject extends drawableObject {
      * @returns {number} The collision value.
      */
     salsaColiding(mo) {
-        return this.x + this.width - mo.x
+        return this.x + this.width > mo.x
     }
 
     /**

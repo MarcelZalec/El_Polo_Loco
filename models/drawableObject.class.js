@@ -59,4 +59,17 @@ class drawableObject {
             console.log("could not find image", this.img.src);
         }
     }
-}
+
+    drawFrame2(ctx) {
+        if (this instanceof Character || this instanceof smallChicken || this instanceof Chicken || this instanceof Collectable ||this instanceof Endboss ||this instanceof throwableObject) {
+            ctx.beginPath();
+            ctx.lineWidth = "5";
+            ctx.strokeStyle = "red";
+            ctx.rect(this.x + this.offset.left, 
+                this.y + this.offset.bottom,
+                this.width - this.offset.right,
+                this.height - this.offset.top,);
+            ctx.stroke();
+        }
+    }
+} 

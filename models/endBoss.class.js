@@ -22,8 +22,8 @@ class Endboss extends MoveableObject {
     liveEnergy = 100;
     speed = 0.05;
     offset = {
-        top: 0,
-        bottom: 50,
+        top: 100,
+        bottom: 80,
         left: 20,
         right: 50,
     }
@@ -94,10 +94,10 @@ class Endboss extends MoveableObject {
             if (i < 10) {
                 this.animate(this.alert)
             } else {
-                this.animate(this.walk)
-                if (world.character.x + 200 > this.x) {
+                if (world.character.x + 400 > this.x) {
                     this.moveLeft(this.speed)
                 }
+                this.animate(this.walk)
             }
 
             i++;

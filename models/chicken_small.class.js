@@ -19,7 +19,7 @@ class smallChicken extends MoveableObject {
     isDead = false;
     offset = {
         top: 0,
-        bottom: 10,
+        bottom: 0,
         left: 0,
         right: 0,
     }
@@ -49,11 +49,11 @@ class smallChicken extends MoveableObject {
     animate1() {
         setInterval(()=>{
             this.animate(this.walk)
-            if (this.liveEnergy <= 0 && !this.isDead) {
+            if (this.liveEnergy <= 0) {
                 this.death_chicken_Sound.play();
                 this.animate(this.IMAGE_isDead);
                 this.isDead = true;
             }
-        }, 110)
+        }, 220)
     }
 }

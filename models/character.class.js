@@ -34,13 +34,13 @@ class Character extends MoveableObject {
     idleTimeout = 10000;
     lastActionTime = 0;
     isStanding = false;
-    liveEnergy = 100;
+    liveEnergy = 1000;
 
     offset = {
-        top: 120,
-        bottom: 140,
-        left: 20,
-        right: 50,
+        top: 160, //20
+        bottom: 130,//140
+        left: 40,
+        right: 90,
     };
 
     IMAGES_walk = [
@@ -162,14 +162,15 @@ class Character extends MoveableObject {
             }else if (this.isHurt()) {
                 this.animate(this.IMAGES_hurt)
             } else if (this.isAboveGround()) {
+                console.log(this.y);
+                
                this.animate(this.IMAGES_jump)
             } else if (this.isStanding) {
                 this.animate(this.IMAGES_idle);
-            }
-               else {
-                if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                    this.animate(this.IMAGES_walk);
-                }
+            } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
+                this.animate(this.IMAGES_walk);
+            } else {
+                this.animate(this.IMAGES_longIdle);
             }
         }, 100)
     }

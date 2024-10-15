@@ -28,7 +28,7 @@ class World {
     camara_x = 0;
     statusbar = [];
     throwableObjects = [];
-    useableObject = 0;
+    useableObject = 50;
     coins = 0;
     collectSound = new Audio("audio/collect.mp3");
     splashSound = new Audio("audio/splash.mp3");
@@ -98,7 +98,6 @@ class World {
         setTimeout(() => {
             this.isThrow = false
         }, 500)
-
     }
 
     /**
@@ -107,11 +106,13 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy, index) => {
             if (this.character.isColliding(enemy)) {
-                if (this.character.isColidingFromTop(enemy) && !(enemy instanceof Endboss) && this.character.speedY < 0) {
-                    enemy.hit(1000);
-                    this.level.enemies.splice(index, 1);
+                if (this.character.isColidingFromTop(enemy) && !(enemy instanceof Endboss) && this.character.speedY < 0 && !enemy.isDead) {                   
+                    enemy.hit(100);
+                    setTimeout(() => {
+                        this.level.enemies.splice(index, 1);
+                    }, 1000)
                 } else if (enemy instanceof Chicken || enemy instanceof smallChicken) {
-                    if (!enemy.isDead) {
+                    if (!enemy.isDead && this.character.y > 110) {
                         this.hurt_sound.play();
                         this.character.hit(20);
                         this.statusbar[0].setPercentage(this.character.liveEnergy, 0)
@@ -136,23 +137,30 @@ class World {
             this.throwableObjects.forEach((bottle) => {
                 this.level.enemies.forEach((enemy) => {
                     if(bottle.isColliding(enemy)) {
-                        if(enemy instanceof Endboss) {
-                            console.log("collinding");
-                            enemy.hitEnemy(25);
-                            bottle.splashAnimation();
-                            enemy.isHurt();
-                            this.splashSound.play();
-                            this.statusbar[3].setPercentage(enemy.liveEnergy, 3);
-                        }else if (!enemy instanceof Endboss) {
-                            this.level.enemies.hitEnemy(100);
-                            bottle.splashAnimation();
-                            this.splashSound.play();
-                        }
-                        this.splashSound.play();
+                        this.checkEnemy(bottle, enemy);
                     }
                 })
             })
         }
+    }
+
+    /**
+     * Check what instance of enemy it is
+     */
+    checkEnemy(bottle, enemy) {
+        if(enemy instanceof Endboss) {
+            console.log("collinding");
+            enemy.hitEnemy(25);
+            bottle.splashAnimation();
+            enemy.isHurt();
+            this.splashSound.play();
+            this.statusbar[3].setPercentage(enemy.liveEnergy, 3);
+        }else if (!enemy instanceof Endboss) {
+            this.level.enemies.hitEnemy(100);
+            bottle.splashAnimation();
+            this.splashSound.play();
+        }
+        this.splashSound.play();
     }
 
     /**
@@ -243,6 +251,7 @@ class World {
             this.flipImage(mo)
         }
         mo.draw(this.ctx);
+        mo.drawFrame2(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo)

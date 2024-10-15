@@ -26,7 +26,7 @@ let gameStarted = false;
  * Indicates if the game sounds are muted.
  * @type {boolean}
  */
-let muted = false;
+let muted;
 
 /**
  * Indicates if the device is turned.
@@ -48,10 +48,11 @@ function init() {
  * Starts the game, initializes the world, and sets up the UI.
  */
 function StartGame() {
+    checkMutedStatusinLocalStorage();
     gameStarted = true;
     checkOrientation();
     startLevel();
-    mobileControles()
+    mobileControles();
     document.getElementById("canvas1").classList.add("d-none");
     world = new World(canvas, keyboard);
     keyboard.bindBtnPressEvents();
@@ -59,6 +60,7 @@ function StartGame() {
     document.getElementById("startButton").disabled = true;
     document.getElementById("muteButton").classList.remove("d-none");
     document.getElementById("imprintButton").classList.add("d-none");
+    toggleGameSounds()
 }
 
 /**
@@ -207,6 +209,7 @@ function mutegame() {
         muted = true;
     }
     document.getElementById("muteButton").blur();
+    saveMutedStatusToLocalStorage();
 }
 
 /**
@@ -257,4 +260,26 @@ function checkGameStatus() {
             document.getElementById("bottomButtons").classList.remove("d-none");
         }
     }, 1000/60)
+}
+
+function checkMutedStatusinLocalStorage() {
+    if (localStorage.getItem("muted") === null) {
+        localStorage.setItem("muted", muted);
+    } else if(localStorage.getItem("muted")) {
+        muted = localStorage.getItem("muted", muted);
+    }
+}
+
+function saveMutedStatusToLocalStorage() {
+    localStorage.setItem("muted", muted);
+}
+
+function toggleGameSounds() {
+    if (muted === "true") {
+        world.muteSounds()
+        document.getElementById("muteButton").innerText = "Play Sounds";
+    } else {
+        document.getElementById("muteButton").innerText = "Mute Sounds";
+        world.playSounds()
+    }
 }

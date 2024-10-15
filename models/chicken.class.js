@@ -46,14 +46,16 @@ class Chicken extends MoveableObject {
     /**
      * Animates the chicken's walking and death actions.
      */
-    animate1() {
+    animate1() {        
         setInterval(()=>{
+            // console.log(this.isDead);
             this.animate(this.walk)
-            if (this.liveEnergy <= 0 && !this.isDead) {
+            if (this.liveEnergy <= 0) { // && !this.isDead
                 this.death_chicken_Sound.play();
-                this.animate(this.IMAGE_isDead)
+                this.animate(this.IMAGE_isDead);
                 this.isDead = true;
+                this.moveLeft(0);
             }
-        }, 110)
+        }, 220)
     }
 }

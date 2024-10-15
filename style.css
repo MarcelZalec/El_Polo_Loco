@@ -1,10 +1,17 @@
+@font-face {
+    font-family: 'zabras';
+    src: url('fonts/Zabars.ttf') format('truetype');
+}
+
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 0;
     background-image: url("img/desert-1052092_1920.jpg");
+    background-size: cover;
     height: 100vh;
+    font-family: 'zabras', Arial, Helvetica, sans-serif;
     a {
         color: goldenrod;
         text-decoration: underline;
@@ -12,6 +19,17 @@ body {
     a:hover {
         color: rgba(218, 165, 32, 0.6);
     }
+}
+
+h1 {
+    font-size: 64px;
+    letter-spacing: 3px;
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.6);
+}
+
+p,h2,h3 {
+    letter-spacing: 3px;
+    font-size: 24px !important;
 }
 
 .d-none {
@@ -46,6 +64,9 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
+        font-family: 'zabras';
+        font-size: 20px;
+        letter-spacing: 1px;
     }
     button:hover {
         cursor: pointer;
@@ -135,7 +156,7 @@ body {
     justify-content: center;
     color: yellow;
     h2 {
-        font-size: 30px;
+        font-size: 40px !important;
         position: absolute;
         top: 0;
         display: flex;
@@ -211,5 +232,15 @@ body {
     }
     .description-container {
         height: 100%;
+    }
+
+    p {
+        font-size: 16px !important;
+    }
+
+    .menuButtons {
+        buttons {
+            font-size: 16px;
+        }
     }
 }

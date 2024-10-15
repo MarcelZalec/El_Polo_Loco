@@ -14,8 +14,8 @@ class Collectable extends drawableObject {
     height;
     width;
     offset = {
-        top: 20,
-        bottom: 40,
+        top: 30,
+        bottom: 20,
         left: 30,
         right: 40,
     }
