@@ -37,6 +37,7 @@ class World {
     statusbarBoss = false;
     isThrow = false;
     gameFinished = false;
+    lastIndex;
 
     /**
      * Creates a new game world.
@@ -91,41 +92,75 @@ class World {
             this.checkSalsaCollisoion();
             this.statusbar[2].setPercentage(this.useableObject*20, 2)
             this.isThrow = true;
+            setTimeout(() => {
+                this.isThrow = false
+            }, 500)
         }
         if (this.useableObject == 0) {
            this.throwableObjects = [];
         }
-        setTimeout(() => {
-            this.isThrow = false
-        }, 500)
     }
 
     /**
      * Checks for collisions between the character and enemies.
      */
     checkCollisions() {
-        this.level.enemies.forEach((enemy, index) => {
-            if (this.character.isColliding(enemy)) {
-                if (this.character.isColidingFromTop(enemy) && !(enemy instanceof Endboss) && this.character.speedY < 0 && !enemy.isDead) {                   
-                    enemy.hit(100);
-                    setTimeout(() => {
-                        this.level.enemies.splice(index, 1);
-                    }, 1000)
-                } else if (enemy instanceof Chicken || enemy instanceof smallChicken) {
-                    if (!enemy.isDead && this.character.y > 110) {
-                        this.hurt_sound.play();
-                        this.character.hit(20);
-                        this.statusbar[0].setPercentage(this.character.liveEnergy, 0)
-                    } else {
-                        null;
+        for (let i = 0; i < this.level.enemies.length; i++) {
+            this.level.enemies[i].forEach((enemy, index) => {
+                if (this.character.isColliding(enemy)) {
+                    if (this.character.isColidingFromTop(enemy) && !(enemy instanceof Endboss) && this.character.speedY < 0 && !enemy.isDead) {                   
+                        this.handleContactFromTop(enemy, index , i);
+                    } else if (enemy instanceof Chicken || enemy instanceof smallChicken) {
+                        this.handleContactWithNormalEnemies(enemy);
+                    } else if(enemy instanceof Endboss){
+                        this.handleContactWithEndboss(enemy);
                     }
-                } else if(enemy instanceof Endboss){
-                    this.hurt_sound.play();
-                    enemy.atacking(20);
-                    this.statusbar[0].setPercentage(this.character.liveEnergy, 0)
                 }
-            }
-        })
+            })
+            
+        }
+    }
+
+    /**
+     * Handles contact from the top and hits the enemy, then removes it from the level.
+     * @param {Object} enemy - The enemy character encountered.
+     * @param {number} index - The index of the enemy in the enemies array.
+     */
+    handleContactFromTop(enemy, index, i) {
+        if (enemy instanceof Chicken || enemy instanceof smallChicken && this.lastIndex != index) {
+            enemy.hit(100);
+            setTimeout(() => {
+                this.level.enemies[i].splice(index, 1);
+                this.lastIndex = -1;
+            }, 1000)
+            this.lastIndex = index;
+        } else {
+            null
+        }
+    }
+
+    /**
+     * Handles contact with normal enemies and updates character's health status.
+     * @param {Object} enemy - The enemy character encountered.
+     */
+    handleContactWithNormalEnemies(enemy) {
+        if (!enemy.isDead && this.character.y > 110) {
+            this.hurt_sound.play();
+            this.character.hit(20);
+            this.statusbar[0].setPercentage(this.character.liveEnergy, 0)
+        } else {
+            null;
+        }
+    }
+
+    /**
+     * Handles contact with the endboss, plays a sound and updates the status.
+     * @param {Object} enemy - The enemy character encountered.
+     */
+    handleContactWithEndboss(enemy) {
+        this.hurt_sound.play();
+        enemy.atacking(20);
+        this.statusbar[0].setPercentage(this.character.liveEnergy, 0)
     }
 
     /**
@@ -135,21 +170,24 @@ class World {
         this.splashSound.pause();
         if (this.throwableObjects.length >= 0) {
             this.throwableObjects.forEach((bottle) => {
-                this.level.enemies.forEach((enemy) => {
-                    if(bottle.isColliding(enemy)) {
-                        this.checkEnemy(bottle, enemy);
-                    }
-                })
+                for (let i = 0; i < this.level.enemies.length; i++) {
+                    this.level.enemies[i].forEach((enemy) => {
+                        if(bottle.isColliding(enemy)) {
+                            this.checkEnemy(bottle, enemy);
+                        }
+                    })
+                }
             })
         }
     }
 
     /**
-     * Check what instance of enemy it is
+     * Checks if the enemy is an Endboss or normal enemy, then applies damage, plays splash animation, and updates the status bar.
+     * @param {Object} bottle - The bottle object used to hit the enemy.
+     * @param {Object} enemy - The enemy character encountered.
      */
     checkEnemy(bottle, enemy) {
         if(enemy instanceof Endboss) {
-            console.log("collinding");
             enemy.hitEnemy(25);
             bottle.splashAnimation();
             enemy.isHurt();
@@ -170,16 +208,10 @@ class World {
         this.level.collectables.forEach((collectable, index) => {
             this.collectSound.pause();
             if (this.character.isColliding(collectable)) {  
-                if (collectable.img.src.includes("salsa")) {
-                    this.useableObject += 1;
-                    this.level.collectables.splice(index, 1);
-                    this.collectSound.play();
-                    this.statusbar[2].setPercentage(this.useableObject*20, 2);
+                if (collectable.img.src.includes("salsa") && this.character.y > 120) {
+                    this.handleCollectBottle(index);
                 } else if(collectable.img.src.includes("coin")) {
-                    this.coins += 1;
-                    this.level.collectables.splice(index, 1);
-                    this.collectSound.play();
-                    this.statusbar[1].setPercentage(this.coins*20, 1);
+                    this.handleCollectCoin(index);
                 } else {
                     null;
                 }
@@ -188,11 +220,33 @@ class World {
     }
 
     /**
+     * Handles the collection of a bottle, increments usable objects, plays a sound, and updates the status bar.
+     * @param {number} index - The index of the bottle in the collectables array.
+     */
+    handleCollectBottle(index) {
+        this.useableObject += 1;
+        this.level.collectables.splice(index, 1);
+        this.collectSound.play();
+        this.statusbar[2].setPercentage(this.useableObject*20, 2);
+    }
+
+    /**
+     * Handles the collection of a coin, increments coins count, plays a sound, and updates the status bar.
+     * @param {number} index - The index of the coin in the collectables array.
+     */
+    handleCollectCoin(index) {
+        this.coins += 1;
+        this.level.collectables.splice(index, 1);
+        this.collectSound.play();
+        this.statusbar[1].setPercentage(this.coins*20, 1);
+    }
+
+    /**
      * Checks the character's position relative to the boss and updates the status bar.
      */
     checkCaracterPositionToBoss() {
         setInterval(() => {
-            this.level.enemies.forEach((enemy)=> {
+            this.level.enemies[2].forEach((enemy)=> {
                 if (enemy instanceof Endboss && enemy.hadFirstContact == true && !this.statusbarBoss) {
                     this.statusbar.push(new Statusbar(3, this.ctx))
                     this.statusbarBoss = true;
@@ -208,21 +262,8 @@ class World {
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.camara_x, 0);
-
-        this.addObjectToMap(this.level.backgroundObjects);
-        this.addObjectToMap(this.level.clouds);
-
-        this.ctx.translate(-this.camara_x, 0);
-        // ------- Space for fixed objects -------
-        this.addObjectToMap(this.statusbar);
-        this.ctx.translate(this.camara_x, 0);
-
-        this.addObjectToMap(this.throwableObjects)
-        this.addToMap(this.character);
-        this.addObjectToMap(this.level.enemies);
-        this.addObjectToMap(this.level.collectables);
+        this.drawGameObjects()
         this.end()
-        
         
         this.ctx.translate(-this.camara_x, 0);
 
@@ -230,6 +271,33 @@ class World {
         requestAnimationFrame(() => { // Draw() wird immer aufgerufen
             self.draw();
         });
+    }
+
+    /**
+     * Draws all game objects on the canvas, including background, clouds, statusbar, character, enemies, and collectables.
+     */
+    drawGameObjects() {
+        this.addObjectToMap(this.level.backgroundObjects);
+        this.addObjectToMap(this.level.clouds);
+
+        this.createStatusbar()
+
+        this.addObjectToMap(this.throwableObjects)
+        this.addToMap(this.character);
+        this.addObjectToMap(this.level.enemies[0]);
+        this.addObjectToMap(this.level.enemies[1]);
+        this.addObjectToMap(this.level.enemies[2]);
+        this.addObjectToMap(this.level.collectables);
+    }
+
+    /**
+     * Creates the status bar, translating the context to account for camera position.
+     */
+    createStatusbar() {
+        this.ctx.translate(-this.camara_x, 0);
+        // ------- Space for fixed objects -------
+        this.addObjectToMap(this.statusbar);
+        this.ctx.translate(this.camara_x, 0);
     }
 
     /**
@@ -251,7 +319,6 @@ class World {
             this.flipImage(mo)
         }
         mo.draw(this.ctx);
-        mo.drawFrame2(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo)
@@ -286,7 +353,7 @@ class World {
             this.addToMap(new EndScreen("img/9_intro_outro_screens/game_over/oh no you lost!.png", this.character.x));
             this.gameFinished = true;
         } else 
-            this.level.enemies.forEach((enemy) => {
+            this.level.enemies[2].forEach((enemy) => {
             if (enemy instanceof Endboss && enemy.liveEnergy <= 0) {
                 this.addToMap(new EndScreen("img/9_intro_outro_screens/win/won_2.png", this.character.x));
                 this.gameFinished = true;
@@ -304,9 +371,11 @@ class World {
         this.hurt_sound.volume = 0;
         this.character.walking_sound.volume = 0;
         this.character.jump_sound.volume = 0;
-        this.level.enemies.forEach((enemy) => {
-            enemy.death_chicken_Sound.volume = 0
-        })
+        for (let i = 0; i < this.level.enemies.length; i++) {
+            this.level.enemies[i].forEach((enemy) => {
+                enemy.death_chicken_Sound.volume = 0;
+            })
+        }
     }
 
     /**
@@ -319,9 +388,11 @@ class World {
         this.hurt_sound.volume = 1;
         this.character.walking_sound.volume = 1;
         this.character.jump_sound.volume = 1;
-        this.level.enemies.forEach((enemy) => {
-            enemy.death_chicken_Sound.volume = 1;
-        })
+        for (let i = 0; i < this.level.enemies.length; i++) {
+            this.level.enemies[i].forEach((enemy) => {
+                enemy.death_chicken_Sound.volume = 1;
+            })
+        }
     }
 
     /**

@@ -34,7 +34,8 @@ class Character extends MoveableObject {
     idleTimeout = 10000;
     lastActionTime = 0;
     isStanding = false;
-    liveEnergy = 1000;
+    liveEnergy = 100;
+    isMoving;
 
     offset = {
         top: 160, //20
@@ -127,52 +128,85 @@ class Character extends MoveableObject {
     walkAnimation() {
         let currentTime = new Date().getTime();
         let timeSinceLastAction = currentTime - this.lastActionTime;
-        let isMoving = false;
+        this.isMoving = false;
 
         setInterval(() => {
-            isMoving = false;
+            this.isMoving = false;
             this.isStanding = false;
-
+            this.checkMovement(timeSinceLastAction)
             this.walking_sound.pause();
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                this.otherDirection = false;
-                this.x += this.speed;
-                this.walking_sound.play();
-                isMoving = true;
-            } else if (this.world.keyboard.LEFT && this.x > 100) {
-                this.x -= this.speed;
-                this.otherDirection = true;
-                this.walking_sound.play();
-                isMoving = true;
-            } if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-                this.jump_sound.play();
-                this.speedY = 15;
-                isMoving = true;
-            } if (isMoving) {
-                this.updateLastActionTime();
-            } if (timeSinceLastAction > this.idleTimeout && !isMoving && !this.isDead() && !this.isStanding){
-                this.isStanding = true;
-            }
             this.world.camara_x = -this.x + 100;
         }, 1000 / 60)
 
         setInterval(() => {
-            if (this.isDead()) {
-                this.animate(this.IMAGES_dead)
-            }else if (this.isHurt()) {
-                this.animate(this.IMAGES_hurt)
-            } else if (this.isAboveGround()) {
-                console.log(this.y);
-                
-               this.animate(this.IMAGES_jump)
-            } else if (this.isStanding) {
-                this.animate(this.IMAGES_idle);
-            } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
-                this.animate(this.IMAGES_walk);
-            } else {
-                this.animate(this.IMAGES_longIdle);
-            }
+            this.animateMovement();
         }, 100)
+    }
+
+    /**
+     * Checks movement based on keyboard input and updates character state.
+     * @param {number} timeSinceLastAction - The time since the last action was performed.
+     */
+    checkMovement(timeSinceLastAction) {
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            this.walkRight();
+        } else if (this.world.keyboard.LEFT && this.x > 100) {
+            this.walkLeft();
+        } if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+            this.jump()
+        } if (this.isMoving) {
+            this.updateLastActionTime();
+        } if (timeSinceLastAction > this.idleTimeout && !this.isMoving && !this.isDead() && !this.isStanding){
+            this.isStanding = true;
+        }
+    }
+
+    /**
+     * Moves the character to the left, plays the walking sound, and marks the character as moving.
+     */
+    walkLeft() {
+        this.x -= this.speed;
+        this.otherDirection = true;
+        this.walking_sound.play();
+        this.isMoving = true;
+    }
+
+    /**
+     * Moves the character to the right, plays the walking sound, and marks the character as moving.
+     */
+    walkRight() {
+        this.otherDirection = false;
+        this.x += this.speed;
+        this.walking_sound.play();
+        this.isMoving = true;
+    }
+
+    /**
+     * Makes the character jump, plays the jump sound, and marks the character as moving.
+     */
+    jump() {
+        this.jump_sound.play();
+        this.speedY = 15;
+        this.isMoving = true;
+    }
+
+    /**
+     * Animates movement of character 
+     */
+    animateMovement() {
+        if (this.isDead()) {
+            this.animate(this.IMAGES_dead)
+        }else if (this.isHurt()) {
+            this.animate(this.IMAGES_hurt)
+        } else if (this.isAboveGround()) {
+           this.animate(this.IMAGES_jump)
+        } else if (this.isStanding) {
+            this.animate(this.IMAGES_idle);
+        } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
+            this.animate(this.IMAGES_walk);
+        } else {
+            this.animate(this.IMAGES_longIdle);
+        }
     }
 
     /**

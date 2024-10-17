@@ -70,6 +70,7 @@ class Endboss extends MoveableObject {
     ]
 
     hadFirstContact = false;
+    isAtacking = false;
 
     /**
      * Creates an end boss enemy.
@@ -89,24 +90,8 @@ class Endboss extends MoveableObject {
      * Animates the end boss's actions.
      */
     animate1() {
-        let i = 0;
         setInterval(() => {
-            if (i < 10) {
-                this.animate(this.alert)
-            } else {
-                if (world.character.x + 400 > this.x) {
-                    this.moveLeft(this.speed)
-                }
-                this.animate(this.walk)
-            }
-
-            i++;
-
-            if (world.character.x > 3000 && !this.hadFirstContact) {
-                i = 0;
-                this.hadFirstContact = true;
-            }
-            
+            this.handleContact()
         }, 250) 
         setInterval(() => {
             if (this.liveEnergy <= 0) {
@@ -116,13 +101,36 @@ class Endboss extends MoveableObject {
         }, 110)
     }
 
+    handleContact() {
+        let i = 0;
+        console.log(i);
+        if (i < 10 && !this.hadFirstContact) {
+            this.animate(this.alert)
+        } else {
+            if (world.character.x + 500 > this.x && this.hadFirstContact && !this.isAtacking) {
+                this.moveLeft(this.speed)
+            }
+            this.animate(this.walk)
+        } i++;
+        if (world.character.x > 3000 && !this.hadFirstContact) {
+            i = 0;
+            this.hadFirstContact = true;
+        }
+    }
+
     /**
      * Executes the attack animation and inflicts damage on the character.
      * @param {number} damage - The amount of damage to inflict.
      */
     atacking(damage) {
+        this.isAtacking = true;
+        this.moveLeft(0)
         this.animate(this.atack);
         world.character.hit(damage);
+        setTimeout(() => {
+            this.isAtacking = false;
+            this.moveLeft(this.speed)
+        }, 500) 
     }
 
     /**

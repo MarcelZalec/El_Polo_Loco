@@ -76,7 +76,7 @@ class Collectable extends drawableObject {
         } else if(obj == "coin") {
             this.height = 90;
             this.width = 90;
-            this.y -= Math.random() *200
+            this.y -= Math.random() *150
             resImg = this.IMAGES_Coins[0];
         }
         this.loadImage(resImg);

@@ -87,10 +87,14 @@ class Statusbar extends drawableObject {
             this.y = 110;
             this.loadImage(this.BOTTLES[this.percentage]);
         } else {
-            this.x = 550;
-            this.y = 20;
-            this.loadImage(this.ENDBOSS[this.resolveImageIndex()]);
+            this.drawEndbossStatusbar()
         }
+    }
+
+    drawEndbossStatusbar() {
+        this.x = 550;
+        this.y = 20;
+        this.loadImage(this.ENDBOSS[this.resolveImageIndex()]);
     }
 
     /**

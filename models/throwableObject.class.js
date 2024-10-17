@@ -66,7 +66,8 @@ class throwableObject extends MoveableObject {
             if (!world.character.otherDirection) {
                 this.x += this.speedX;
             } else {
-                this.x -= this.speedX;
+                // this.x -= this.speedX;
+                null
             }
             this.animate(this.IMAGES_throw);
         }, 60)
