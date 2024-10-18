@@ -31,17 +31,18 @@ class Character extends MoveableObject {
     world;
     walking_sound = new Audio("audio/walk.mp3");
     jump_sound = new Audio("audio/jump.mp3");
-    idleTimeout = 10000;
-    lastActionTime = 0;
+    idleTimeout = 2000;
+    lastActionTime;
     isStanding = false;
     liveEnergy = 100;
     isMoving;
+    standingLong;
 
     offset = {
         top: 160, //20
         bottom: 130,//140
-        left: 40,
-        right: 90,
+        left: 20,
+        right: 50,
     };
 
     IMAGES_walk = [
@@ -120,20 +121,20 @@ class Character extends MoveableObject {
         this.loadImages(this.IMAGES_longIdle);
         this.applyGravity();
         this.walkAnimation();
+        this.updateLastActionTime();
+        this.checkStandingTime();
     }
 
     /**
      * Animates the character's walking, jumping, and idle actions.
      */
     walkAnimation() {
-        let currentTime = new Date().getTime();
-        let timeSinceLastAction = currentTime - this.lastActionTime;
         this.isMoving = false;
 
         setInterval(() => {
             this.isMoving = false;
             this.isStanding = false;
-            this.checkMovement(timeSinceLastAction)
+            this.checkMovement()
             this.walking_sound.pause();
             this.world.camara_x = -this.x + 100;
         }, 1000 / 60)
@@ -145,19 +146,22 @@ class Character extends MoveableObject {
 
     /**
      * Checks movement based on keyboard input and updates character state.
-     * @param {number} timeSinceLastAction - The time since the last action was performed.
      */
-    checkMovement(timeSinceLastAction) {
+    checkMovement() {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
             this.walkRight();
         } else if (this.world.keyboard.LEFT && this.x > 100) {
             this.walkLeft();
+        } else if (this.world.keyboard.D) {
+            this.isMoving = true;
         } if (this.world.keyboard.SPACE && !this.isAboveGround()) {
             this.jump()
         } if (this.isMoving) {
             this.updateLastActionTime();
-        } if (timeSinceLastAction > this.idleTimeout && !this.isMoving && !this.isDead() && !this.isStanding){
+        } if (!this.isMoving && !this.isDead() && !this.standingLong){
             this.isStanding = true;
+        } else {
+            null;
         }
     }
 
@@ -200,12 +204,14 @@ class Character extends MoveableObject {
             this.animate(this.IMAGES_hurt)
         } else if (this.isAboveGround()) {
            this.animate(this.IMAGES_jump)
-        } else if (this.isStanding) {
+        } else if (this.isStanding && !this.isMoving) {
             this.animate(this.IMAGES_idle);
         } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
             this.animate(this.IMAGES_walk);
-        } else {
+        } else if(this.standingLong) {
             this.animate(this.IMAGES_longIdle);
+        } else {
+            null
         }
     }
 
@@ -224,5 +230,20 @@ class Character extends MoveableObject {
      */
     updateLastActionTime() {
         this.lastActionTime = new Date().getTime();
+    }
+
+    checkStandingTime() {
+        setInterval(() => {
+            let currentTime = new Date().getTime();
+            let timeSinceLastAction = this.lastActionTime + this.idleTimeout;
+            // console.log(currentTime, timeSinceLastAction, timeSinceLastAction < currentTime);
+            if (timeSinceLastAction < currentTime) {
+                this.standingLong = true;
+                this.isStanding = false;
+            } else {
+                this.standingLong = false;
+                this.isStanding = true;
+            }
+        }, 1000/60)
     }
 }

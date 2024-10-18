@@ -88,43 +88,13 @@ class MoveableObject extends drawableObject {
                 this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
 
-    isColidingFromTop(mo) {
-            return  this.y + this.height > mo.y + mo.offset.top
-            
-            
-            
-            // this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-            //         this.y + this.height - this.offset.bottom > mo.y + mo.offset.top && 
-            //         this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
-            //         this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;     
-    }
-
     /**
      * Checks if the object is colliding with an enemy from the top.
-     * @param {Object} enemy - The enemy object.
+     * @param {Object} mo - The moveable object.
      * @returns {boolean} True if the object is colliding from the top, otherwise false.
      */
-    isColidingFromTopOriginal(enemy) {
-        if (enemy instanceof smallChicken) {
-            return  this.x + this.width - this.offset.right > enemy.x && 
-                    this.y + this.height - enemy.height*1.2 < enemy.y + enemy.offset.bottom &&
-                    this.x + this.offset.left < enemy.x + enemy.width &&
-                    this.y + this.offset.top < enemy.y + enemy.height;
-        } else {
-            return  this.x + this.width - this.offset.right > enemy.x && 
-                    this.y + this.height - enemy.height*1 < enemy.y + enemy.offset.bottom &&
-                    this.x + this.offset.left < enemy.x + enemy.width &&
-                    this.y + this.offset.top < enemy.y + enemy.height; 
-        }        
-    }
-    
-    /**
-     * Checks if the object is colliding with salsa.
-     * @param {Object} mo - The salsa object.
-     * @returns {number} The collision value.
-     */
-    salsaColiding(mo) {
-        return this.x + this.width > mo.x
+    isColidingFromTop(mo) {
+        return  this.y + this.height > mo.y + mo.offset.top    
     }
 
     /**

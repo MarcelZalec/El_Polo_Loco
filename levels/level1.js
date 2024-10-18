@@ -75,10 +75,6 @@ function startLevel() {
             new Collectable("coin"),
             new Collectable("bottle"),
             new Collectable("coin"),
-            new Collectable("bottle"),
-            new Collectable("coin"),
-            new Collectable("bottle"),
-            new Collectable("coin"),
         ],
     );
 }

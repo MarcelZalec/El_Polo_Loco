@@ -63,12 +63,7 @@ class throwableObject extends MoveableObject {
      */
     throwAnimation() {
         setInterval(() => {
-            if (!world.character.otherDirection) {
-                this.x += this.speedX;
-            } else {
-                // this.x -= this.speedX;
-                null
-            }
+            this.x += this.speedX;
             this.animate(this.IMAGES_throw);
         }, 60)
     }

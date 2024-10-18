@@ -28,7 +28,7 @@ class World {
     camara_x = 0;
     statusbar = [];
     throwableObjects = [];
-    useableObject = 50;
+    useableObject = 0;
     coins = 0;
     collectSound = new Audio("audio/collect.mp3");
     splashSound = new Audio("audio/splash.mp3");
@@ -77,6 +77,7 @@ class World {
         setInterval(() => {
             this.checkCollectCollisoion();
             this.checkThrowObject();
+            this.checkSalsaCollisoion();
         }, 1000/60)
     }
 
@@ -89,7 +90,6 @@ class World {
             this.throwableObjects.push(bottle);
             this.useableObject -= 1;
             this.keyboard.D = false;
-            this.checkSalsaCollisoion();
             this.statusbar[2].setPercentage(this.useableObject*20, 2)
             this.isThrow = true;
             setTimeout(() => {
@@ -174,6 +174,7 @@ class World {
                     this.level.enemies[i].forEach((enemy) => {
                         if(bottle.isColliding(enemy)) {
                             this.checkEnemy(bottle, enemy);
+                            this.throwableObjects.splice(-1, 1)
                         }
                     })
                 }
