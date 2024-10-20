@@ -171,8 +171,12 @@ class Character extends MoveableObject {
     walkLeft() {
         this.x -= this.speed;
         this.otherDirection = true;
-        this.walking_sound.play();
         this.isMoving = true;
+        try {
+            this.walking_sound.play();
+        } catch (error) {
+            null;
+        }
     }
 
     /**
@@ -181,15 +185,18 @@ class Character extends MoveableObject {
     walkRight() {
         this.otherDirection = false;
         this.x += this.speed;
-        this.walking_sound.play();
         this.isMoving = true;
+        try {
+            this.walking_sound.play();
+        } catch (error) {
+            null;
+        }
     }
 
     /**
      * Makes the character jump, plays the jump sound, and marks the character as moving.
      */
     jump() {
-        this.jump_sound.play();
         this.speedY = 15;
         this.isMoving = true;
     }
@@ -236,7 +243,6 @@ class Character extends MoveableObject {
         setInterval(() => {
             let currentTime = new Date().getTime();
             let timeSinceLastAction = this.lastActionTime + this.idleTimeout;
-            // console.log(currentTime, timeSinceLastAction, timeSinceLastAction < currentTime);
             if (timeSinceLastAction < currentTime) {
                 this.standingLong = true;
                 this.isStanding = false;

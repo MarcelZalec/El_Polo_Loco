@@ -41,13 +41,13 @@ function init() {
     canvas = document.getElementById("canvas");
     setInterval(() => {
         checkOrientation();
-    }, 1000/60)
+    }, 1000/4)
 }
 
 /**
  * Starts the game, initializes the world, and sets up the UI.
  */
-function StartGame() {
+async function StartGame() {
     checkMutedStatusinLocalStorage();
     gameStarted = true;
     checkOrientation();
@@ -60,7 +60,7 @@ function StartGame() {
     document.getElementById("startButton").disabled = true;
     document.getElementById("muteButton").classList.remove("d-none");
     document.getElementById("imprintButton").classList.add("d-none");
-    toggleGameSounds()
+    toggleGameSounds();
 }
 
 /**
@@ -125,7 +125,7 @@ function stopGame() {
  * Adjusts the UI for mobile controls based on screen size.
  */
 function mobileControles() {
-    if (window.screen.width <= 720 || window.screen.height <= 460) {
+    if (window.screen.width <= 1420 || window.screen.height <= 460) {
         document.getElementById("controles").classList.remove("d-none");
         document.getElementById("bottomButtons").classList.add("d-none");
         isTurned = true;
@@ -138,7 +138,7 @@ function mobileControles() {
  * Checks the screen orientation and adjusts the UI accordingly.
  */
 function checkOrientation() {
-    if (window.screen.width < window.screen.height && window.screen.height < 460 || window.screen.width < 460) { // window.screen.width > window.screen.height && window.screen.height < 460 && window.screen.width < 700
+    if (window.screen.width < window.screen.height && window.screen.height < 460 || window.screen.width < 460) {
         document.getElementById("turn-device").classList.remove("d-none");
         document.getElementById("bottomButtons").classList.add("d-none");
         isTurned = true;

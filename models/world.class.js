@@ -385,7 +385,7 @@ class World {
     playSounds() {
         this.splashSound.volume = 1;
         this.collectSound.volume = 1;
-        this.backgroundSound.volume = 1;
+        this.backgroundSound.volume = 0.7;
         this.hurt_sound.volume = 1;
         this.character.walking_sound.volume = 1;
         this.character.jump_sound.volume = 1;
@@ -402,7 +402,11 @@ class World {
     playBackgroundSounds() {
         setInterval(() => {
             if (!this.gameFinished) {
-                this.backgroundSound.play();
+                try {
+                    this.backgroundSound.play();
+                } catch (error) {
+                    null;
+                }
             } else {
                 this.backgroundSound.volume = 0;
                 this.backgroundSound.pause();

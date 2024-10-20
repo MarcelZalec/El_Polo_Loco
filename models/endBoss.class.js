@@ -103,7 +103,6 @@ class Endboss extends MoveableObject {
 
     handleContact() {
         let i = 0;
-        console.log(i);
         if (i < 10 && !this.hadFirstContact) {
             this.animate(this.alert)
         } else {
