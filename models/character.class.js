@@ -34,7 +34,7 @@ class Character extends MoveableObject {
     idleTimeout = 2000;
     lastActionTime;
     isStanding = false;
-    liveEnergy = 100;
+    liveEnergy = 10000;
     isMoving;
     standingLong;
 
@@ -137,7 +137,7 @@ class Character extends MoveableObject {
             this.checkMovement()
             this.walking_sound.pause();
             this.world.camara_x = -this.x + 100;
-        }, 1000 / 60)
+        }, 1000/60)
 
         setInterval(() => {
             this.animateMovement();
@@ -148,10 +148,12 @@ class Character extends MoveableObject {
      * Checks movement based on keyboard input and updates character state.
      */
     checkMovement() {
-        if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.enemies[2][0].x) { // level_end_x
             this.walkRight();
+            this.world.isTurned = false; 
         } else if (this.world.keyboard.LEFT && this.x > 100) {
             this.walkLeft();
+            this.world.isTurned = true;
         } else if (this.world.keyboard.D) {
             this.isMoving = true;
         } if (this.world.keyboard.SPACE && !this.isAboveGround()) {

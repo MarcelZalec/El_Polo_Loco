@@ -47,6 +47,23 @@ p,h2,h3 {
     justify-content: center;
 }
 
+#returnToMenu {
+    position: absolute;
+    button {
+        height: 30px;
+        background-color: rgb(230, 230, 73);
+        border-radius: 14px;
+        border: 2px solid blue;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'zabras';
+        font-size: 20px;
+        letter-spacing: 1px;
+    }
+}
+
 .menuButtons {
     position: absolute;
     bottom: 20vh;

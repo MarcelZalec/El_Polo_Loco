@@ -38,6 +38,7 @@ class World {
     isThrow = false;
     gameFinished = false;
     lastIndex;
+    isTurned; 
 
     /**
      * Creates a new game world.
@@ -60,6 +61,17 @@ class World {
         this.playBackgroundSounds();
     }
 
+    async firstLoad() {
+        await Promise.all([
+            this.loadCharacter(),
+        ]);
+        return true;
+    }
+
+    async loadCharacter() {
+        return new Promise(resolve => setTimeout(resolve, 1000));
+    }
+
     /**
      * Sets the world for the character.
      */
@@ -73,6 +85,7 @@ class World {
     checkCollisionsObjects() {
         setInterval(() => {
             this.checkCollisions();
+            this.checkCaracterPositionToBoss()
         }, 1000/10);
         setInterval(() => {
             this.checkCollectCollisoion();
@@ -85,7 +98,7 @@ class World {
      * Checks if a throwable object should be thrown.
      */
     checkThrowObject() {
-        if (this.keyboard.D && this.useableObject > 0 && !this.isThrow) {
+        if (this.keyboard.D && this.useableObject > 0 && !this.isThrow && !this.isTurned) {
             let bottle = new throwableObject(this.character.x, this.character.y);
             this.throwableObjects.push(bottle);
             this.useableObject -= 1;
@@ -94,10 +107,13 @@ class World {
             this.isThrow = true;
             setTimeout(() => {
                 this.isThrow = false
-            }, 500)
+            }, 1500)
         }
         if (this.useableObject == 0) {
-           this.throwableObjects = [];
+            null
+            setTimeout(()=> {
+                this.throwableObjects = [];
+            },2000)
         }
     }
 
@@ -248,9 +264,14 @@ class World {
     checkCaracterPositionToBoss() {
         setInterval(() => {
             this.level.enemies[2].forEach((enemy)=> {
+                // console.log(enemy.x);
                 if (enemy instanceof Endboss && enemy.hadFirstContact == true && !this.statusbarBoss) {
                     this.statusbar.push(new Statusbar(3, this.ctx))
                     this.statusbarBoss = true;
+                }
+                if (enemy.x +100 < this.character.x) {
+                    this.character.liveEnergy = 0;
+                    this.statusbar[0].setPercentage(this.character.liveEnergy, 0);
                 }
             })
         }, 10)
@@ -351,15 +372,21 @@ class World {
      */
     end() {
         if (this.character.liveEnergy <= 0) {
-            this.addToMap(new EndScreen("img/9_intro_outro_screens/game_over/oh no you lost!.png", this.character.x));
-            this.gameFinished = true;
+            this.drawLoseScreen();
         } else 
             this.level.enemies[2].forEach((enemy) => {
             if (enemy instanceof Endboss && enemy.liveEnergy <= 0) {
                 this.addToMap(new EndScreen("img/9_intro_outro_screens/win/won_2.png", this.character.x));
                 this.gameFinished = true;
+                document.getElementById("returnToMenu").classList.remove("d-none");
             }
         })
+    }
+
+    drawLoseScreen() {
+        this.addToMap(new EndScreen("img/9_intro_outro_screens/game_over/oh no you lost!.png", this.character.x));
+        this.gameFinished = true;
+        document.getElementById("returnToMenu").classList.remove("d-none");
     }
 
     /**
@@ -385,7 +412,7 @@ class World {
     playSounds() {
         this.splashSound.volume = 1;
         this.collectSound.volume = 1;
-        this.backgroundSound.volume = 0.7;
+        this.backgroundSound.volume = 0.2; //0.5
         this.hurt_sound.volume = 1;
         this.character.walking_sound.volume = 1;
         this.character.jump_sound.volume = 1;

@@ -52,15 +52,17 @@ async function StartGame() {
     gameStarted = true;
     checkOrientation();
     startLevel();
+    world = new World(canvas, keyboard);
+    await world.firstLoad();
     mobileControles();
     document.getElementById("canvas1").classList.add("d-none");
-    world = new World(canvas, keyboard);
     keyboard.bindBtnPressEvents();
     document.getElementById("startButton").innerText = "Start Game"
     document.getElementById("startButton").disabled = true;
     document.getElementById("muteButton").classList.remove("d-none");
     document.getElementById("imprintButton").classList.add("d-none");
     toggleGameSounds();
+    world.level.enemies[2][0].hadFirstContact = false;
 }
 
 /**
@@ -78,6 +80,8 @@ window.addEventListener('keydown', (e) => { // keypress reagiert nicht auf die P
         keyboard.UP = true;
     } else if (e.keyCode == 32) {
         keyboard.SPACE = true
+    } else if(e.keyCode == 68) {
+        keyboard.D = true;
     } else {
         return null
     }
@@ -99,7 +103,7 @@ window.addEventListener('keyup', (e) => {
     } else if (e.keyCode == 32) {
         keyboard.SPACE = false;
     }else if(e.keyCode == 68) {
-        keyboard.D = true;
+        keyboard.D = false;
     } else {
         return null
     }
@@ -282,4 +286,8 @@ function toggleGameSounds() {
         document.getElementById("muteButton").innerText = "Mute Sounds";
         world.playSounds()
     }
+}
+
+function goToMenu() {
+    location.reload();
 }
