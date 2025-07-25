@@ -34,7 +34,7 @@ class Character extends MoveableObject {
     idleTimeout = 2000;
     lastActionTime;
     isStanding = false;
-    liveEnergy = 10000;
+    liveEnergy = 100;
     isMoving;
     standingLong;
 
