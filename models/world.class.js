@@ -381,6 +381,10 @@ class World {
                 document.getElementById("returnToMenu").classList.remove("d-none");
             }
         })
+        if (!this.gameFinished) {
+            document.getElementById("returnToMenu").classList.add("d-none")
+            return
+        }
     }
 
     drawLoseScreen() {
